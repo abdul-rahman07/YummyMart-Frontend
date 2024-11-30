@@ -1,22 +1,72 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import YummyMart from '../../../assets/YummyMart.svg'; // Adjust the path based on your folder structure
-
+import { useNavigation } from '@react-navigation/native';
 
 const Login = () => {
 
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
+  const [enableLogin, setEnableLogin] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const navigation = useNavigation();
 
-  const handleLogin = () => {
-    if (!mobile || !otp) {
-      alert('Please enter all fields');
+  const handleAlert = (alertMsg) => {
+    setShowAlert(true);
+      setAlertMessage(alertMsg);
+      setTimeout(() => {
+        setShowAlert(false);
+        setAlertMessage('');
+      }, 3000);
+  }
+
+  const sendOTP = async () => {
+    if (!mobile) {
+      handleAlert('Please enter mobile number');
       return;
     }
-    alert('Logged in successfully');
+    const sendOTPRes = await fetch('http://localhost:4000/send/otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile }),
+    });
+    if (sendOTPRes.ok) {
+      handleAlert('OTP sent successfully');
+      setEnableLogin(true);
+    } else {
+      handleAlert('Failed to send OTP');
+    }
+  }
+
+  const handleLogin = async () => {
+    if (!mobile || !otp) {
+      handleAlert('Please enter all fields');
+      return;
+    }
+    const verifyOTPRes = await fetch('http://localhost:4000/otp/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile, otp }),
+    });
+    const verifyOTPData = await verifyOTPRes.json();
+    handleAlert(verifyOTPData.message);
+    if(verifyOTPData.isVerified && verifyOTPData.isNewUser) {
+      navigation.navigate('Onboarding', { mobile });
+    } else if(verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
+      navigation.navigate('Home');
+    }
+    return;
   };
 
   return <>
+    {showAlert && <View style={styles.alertContainer}>
+          <Text style={styles.alertText}>{alertMessage}</Text>
+      </View>}
         <View style={styles.welcomeContainer}>
           <Image
             style={styles.logo}
@@ -39,6 +89,9 @@ const Login = () => {
         onChangeText={setMobile}
          placeholderTextColor="#979899"
       />
+      <TouchableOpacity style={styles.sendOTPButton} onPress={sendOTP}>
+        <Text style={styles.buttonText}>Send OTP</Text>
+      </TouchableOpacity>
       <TextInput
         placeholder="Enter OTP"
         style={styles.input2}
@@ -47,7 +100,7 @@ const Login = () => {
         onChangeText={setOtp}
          placeholderTextColor="#979899"
       />
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={!enableLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
      </View>
@@ -83,7 +136,6 @@ const styles = StyleSheet.create({
     fontFamily: "DM Sans, sans-serif",
     fontWeight: 400,
   },
-
   container: {
     flex: 1,
     padding: 30,
@@ -144,6 +196,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // To center the text
     marginTop: 4,
   },
+  sendOTPButton: {
+    backgroundColor: "#FF7300",
+    borderColor: "#FF7300",
+    borderWidth: 1,
+    width: '30%',
+    paddingTop: 16,
+    paddingRight: 20,
+    paddingBottom: 16,
+    paddingLeft: 20,
+    borderRadius: 100,
+    alignItems: 'center', // To center the text
+    justifyContent: 'center', // To center the text
+    marginTop: 4,
+  },
   buttonText: {
     color: '#fff',
     fontSize: 14,
@@ -158,6 +224,18 @@ const styles = StyleSheet.create({
     color: 'black', // Link text color
     textDecorationLine: 'underline', // Underline text
     marginTop: 0, // Remove extra margin on top of the link
+  },
+  alertContainer: {
+    position: 'absolute',
+    top: '10px',
+    left: 0,
+    right: 0,
+    backgroundColor: '#4f4b48',
+    padding: 10,
+  },
+  alertText: {
+    color: '#fff',
+    textAlign: 'center',
   },
 });
 
