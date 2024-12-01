@@ -130,7 +130,7 @@ export default function AccountSettings() {
         </View>
         <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainer1}>
+        <View style={styles.OrdersContainerDelivery}>
     <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
     <Image
             style={styles.settingIcon}
@@ -149,7 +149,7 @@ export default function AccountSettings() {
         </View>
         <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainer1}>
+        <View style={styles.OrdersContainerSeller}>
     <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
     <Image
             style={styles.settingIcon}
@@ -228,6 +228,32 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 12,
     marginTop: 10,
+  },
+  OrdersContainerDelivery: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent:"space-between",
+    alignItems:"center",
+    width: "100%",
+    height: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 12,
+    paddingTop: 10,
+    backgroundColor: "#F1F8FF",
+  },
+  OrdersContainerSeller: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent:"space-between",
+    alignItems:"center",
+    width: "100%",
+    height: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingBottom: 12,
+    paddingTop: 10,
+    backgroundColor: "#FFF3E9",
   },
   settingText: {
     color: "rgba(0,0,0,1)",

@@ -14,7 +14,8 @@ import AccountInactive from '../../assets/AccountInactive.svg';
 import LoginScreen from '../screens/Login/Login';
 import OnboardingScreen from '../screens/Onboarding/Onboarding';
 import HomeCustomer from '../screens/Home/HomeCustomer';
-import AccountSettings from '../screens/Home/AccountSettings/AccountSettings';
+import AccountSettings from '../screens/AccountSettings/AccountSettings';
+import Catgeories from '../screens/Categories/Categories'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,8 +53,8 @@ const HomeTabs = () => {
       }}
        />
        <Tab.Screen
-  name="Account"
-  component={OnboardingScreen}
+  name="Catgeories"
+  component={Catgeories}
   options={{
     tabBarIcon: ({ focused }) => (
       <SettingsIcon
