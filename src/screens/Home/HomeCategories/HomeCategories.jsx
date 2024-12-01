@@ -1,7 +1,23 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
 
 export default function Group1000004396() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    const categoriesRes = await fetch('http://localhost:4000/get/categories', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const categoriesData = await categoriesRes.json();
+    setCategories(categoriesData);
+  }
   return (
     <View style={styles.CategoriesContainer}>
 
@@ -12,85 +28,23 @@ export default function Group1000004396() {
             </TouchableOpacity>
           </View>
 
-{/* categories */}
+          {/* categories */}
           <View style={styles.CategoriesListBox}>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
-         <View style={styles.CategoryBox}>
-        <Image
-          style={styles.CategoryImage}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa",
-          }}
-        />
-        <Text style={styles.CategoryText}>Fruits</Text>
-         </View>
+            {
+              categories.map((category) => (
+                <View style={styles.CategoryBox}>
+                  <Image
+                    style={styles.CategoryImage}
+                    source={{
+                      uri: category.image,
+                    }}
+                  />
+                  <Text style={styles.CategoryText}>{category.name}</Text>
+                </View>
+              ))
+            }
+          </View>
         </View>
-
-        </View>
-
-
   )
 }
 

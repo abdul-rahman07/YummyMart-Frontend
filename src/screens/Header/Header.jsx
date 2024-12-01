@@ -1,7 +1,7 @@
 import React from "react"
 import { StyleSheet, Image, Text, View, ImageBackground } from "react-native"
 
-export default function Group1000004395() {
+export default function Group1000004395({userDetails}) {
   return (
 
 
@@ -15,7 +15,7 @@ export default function Group1000004395() {
             }}
           />
           <View style={styles.detailsContainer}>
-           <Text style={styles.userName}>Hi Abdul Rahman</Text>
+           <Text style={styles.userName}>Hi {userDetails.name}</Text>
             <View style={styles.locationContainer}>
               <Image
                 style={styles.LocationLogo}
@@ -24,7 +24,7 @@ export default function Group1000004395() {
                 }}
               />
 
-                <Text style={styles.address}>Panagudi, 20C...</Text>
+                <Text style={styles.address}>{userDetails.location}</Text>
             </View>
           </View>
 

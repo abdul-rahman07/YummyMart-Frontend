@@ -58,7 +58,7 @@ const Login = () => {
     if(verifyOTPData.isVerified && verifyOTPData.isNewUser) {
       navigation.navigate('Onboarding', { mobile });
     } else if(verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
-      navigation.navigate('Home');
+      navigation.navigate('Home', { mobile });
     }
     return;
   };

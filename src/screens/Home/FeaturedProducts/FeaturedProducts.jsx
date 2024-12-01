@@ -18,184 +18,181 @@ export default function FeaturedProducts() {
 
 {/* categories */}
           <View style={styles.CategoriesListBox}>
-         <View style={styles.CategoryBox}>
-         <View style={styles.productContainer}>
-         <Image
-            style={styles.product}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
-            }}
-            />
-         </View>
-         <View style={styles.leftTopBox}>
-      <Text style={styles.leftTopText}>52% Off</Text>
-    </View>
-    <Image
-      style={styles.plusIcon}
-      source={{
-        uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-      }}
-    />
-
-      <View style={styles.ProductDetail}>
-        <Text style={styles.price}>480da</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>630da</Text>
+            <View style={styles.CategoryBox}>
+            <View style={styles.productContainer}>
+            <Image
+                style={styles.product}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
+                }}
+                />
+            </View>
+            <View style={styles.leftTopBox}>
+          <Text style={styles.leftTopText}>52% Off</Text>
         </View>
-        <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
-      </View>
+        <Image
+          style={styles.plusIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
+          }}
+        />
 
-         </View>
+          <View style={styles.ProductDetail}>
+            <Text style={styles.price}>480da</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>630da</Text>
+            </View>
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+          </View>
 
-         <View style={styles.CategoryBox}>
-         <View style={styles.productContainer}>
-         <Image
-            style={styles.product}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
-            }}
-            />
-         </View>
-         <View style={styles.leftTopBox}>
-      <Text style={styles.leftTopText}>52% Off</Text>
-    </View>
-    <Image
-      style={styles.plusIcon}
-      source={{
-        uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-      }}
-    />
+            </View>
 
-      <View style={styles.ProductDetail}>
-        <Text style={styles.price}>480da</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>630da</Text>
+            <View style={styles.CategoryBox}>
+            <View style={styles.productContainer}>
+            <Image
+                style={styles.product}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
+                }}
+                />
+            </View>
+            <View style={styles.leftTopBox}>
+          <Text style={styles.leftTopText}>52% Off</Text>
         </View>
-        <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
-      </View>
+        <Image
+          style={styles.plusIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
+          }}
+        />
 
-         </View>
+          <View style={styles.ProductDetail}>
+            <Text style={styles.price}>480da</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>630da</Text>
+            </View>
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+          </View>
 
-         <View style={styles.CategoryBox}>
-         <View style={styles.productContainer}>
-         <Image
-            style={styles.product}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
-            }}
-            />
-         </View>
-         <View style={styles.leftTopBox}>
-      <Text style={styles.leftTopText}>52% Off</Text>
-    </View>
-    <Image
-      style={styles.plusIcon}
-      source={{
-        uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-      }}
-    />
+            </View>
 
-      <View style={styles.ProductDetail}>
-        <Text style={styles.price}>480da</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>630da</Text>
+            <View style={styles.CategoryBox}>
+            <View style={styles.productContainer}>
+            <Image
+                style={styles.product}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
+                }}
+                />
+            </View>
+            <View style={styles.leftTopBox}>
+          <Text style={styles.leftTopText}>52% Off</Text>
         </View>
-        <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
-      </View>
+        <Image
+          style={styles.plusIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
+          }}
+        />
 
-         </View>
+          <View style={styles.ProductDetail}>
+            <Text style={styles.price}>480da</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>630da</Text>
+            </View>
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+          </View>
 
-         <View style={styles.CategoryBox}>
-         <View style={styles.productContainer}>
-         <Image
-            style={styles.product}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
-            }}
-            />
-         </View>
-         <View style={styles.leftTopBox}>
-      <Text style={styles.leftTopText}>52% Off</Text>
-    </View>
-    <Image
-      style={styles.plusIcon}
-      source={{
-        uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-      }}
-    />
+            </View>
 
-      <View style={styles.ProductDetail}>
-        <Text style={styles.price}>480da</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>630da</Text>
+            <View style={styles.CategoryBox}>
+            <View style={styles.productContainer}>
+            <Image
+                style={styles.product}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
+                }}
+                />
+            </View>
+            <View style={styles.leftTopBox}>
+          <Text style={styles.leftTopText}>52% Off</Text>
         </View>
-        <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
-      </View>
+        <Image
+          style={styles.plusIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
+          }}
+        />
 
-         </View>
+          <View style={styles.ProductDetail}>
+            <Text style={styles.price}>480da</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>630da</Text>
+            </View>
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+          </View>
 
-         <View style={styles.CategoryBox}>
-         <View style={styles.productContainer}>
-         <Image
-            style={styles.product}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
-            }}
-            />
-         </View>
-         <View style={styles.leftTopBox}>
-      <Text style={styles.leftTopText}>52% Off</Text>
-    </View>
-    <Image
-      style={styles.plusIcon}
-      source={{
-        uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-      }}
-    />
+            </View>
 
-      <View style={styles.ProductDetail}>
-        <Text style={styles.price}>480da</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>630da</Text>
+            <View style={styles.CategoryBox}>
+            <View style={styles.productContainer}>
+            <Image
+                style={styles.product}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
+                }}
+                />
+            </View>
+            <View style={styles.leftTopBox}>
+          <Text style={styles.leftTopText}>52% Off</Text>
         </View>
-        <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
-      </View>
+        <Image
+          style={styles.plusIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
+          }}
+        />
 
-         </View>
+          <View style={styles.ProductDetail}>
+            <Text style={styles.price}>480da</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>630da</Text>
+            </View>
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+          </View>
 
-         <View style={styles.CategoryBox}>
-         <View style={styles.productContainer}>
-         <Image
-            style={styles.product}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
-            }}
-            />
-         </View>
-         <View style={styles.leftTopBox}>
-      <Text style={styles.leftTopText}>52% Off</Text>
-    </View>
-    <Image
-      style={styles.plusIcon}
-      source={{
-        uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-      }}
-    />
+            </View>
 
-      <View style={styles.ProductDetail}>
-        <Text style={styles.price}>480da</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>630da</Text>
+            <View style={styles.CategoryBox}>
+            <View style={styles.productContainer}>
+            <Image
+                style={styles.product}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6",
+                }}
+                />
+            </View>
+            <View style={styles.leftTopBox}>
+          <Text style={styles.leftTopText}>52% Off</Text>
         </View>
-        <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
-      </View>
+        <Image
+          style={styles.plusIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
+          }}
+        />
 
-         </View>
+          <View style={styles.ProductDetail}>
+            <Text style={styles.price}>480da</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.originalPrice}>630da</Text>
+            </View>
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+          </View>
 
+            </View>
+          </View>
         </View>
-        </View>
-
-
   )
 }
 

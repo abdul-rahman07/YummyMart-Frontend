@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Image, Text, View, TextInput,TouchableOpacity } from "react-native"
 import { CheckBox } from '@rneui/themed';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // For Material icons support
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function Onboarding() {
@@ -42,7 +42,7 @@ export default function Onboarding() {
         body: JSON.stringify({ mobile, ...userDetail }),
       });
       if (submitRes.ok) {
-        navigation.navigate('Home');
+        navigation.navigate('Home', { mobile });
       } else {
         handleAlert('Failed to submit details. Please try again');
       }
