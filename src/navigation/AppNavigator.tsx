@@ -14,7 +14,7 @@ import AccountInactive from '../../assets/AccountInactive.svg';
 import LoginScreen from '../screens/Login/Login';
 import OnboardingScreen from '../screens/Onboarding/Onboarding';
 import HomeCustomer from '../screens/Home/HomeCustomer';
-import HomeCategories from '../screens/Home/HomeCategories/HomeCategories';
+import AccountSettings from '../screens/Home/AccountSettings/AccountSettings';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -82,7 +82,7 @@ const HomeTabs = () => {
 />
 <Tab.Screen 
   name="Settings"
-  component={HomeCategories} 
+  component={AccountSettings} 
   options={{
     tabBarIcon: ({ focused, color, size }) => (
       focused ? (
