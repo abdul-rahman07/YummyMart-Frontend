@@ -1,13 +1,17 @@
 import React from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
+import {
+  useNavigation,
+} from '@react-navigation/native';
 
 export default function Group1000004396() {
+  const navigation = useNavigation();
   return (
     <View style={styles.CategoriesContainer}>
 
           <View style={styles.CategoriesHeader}>
             <Text style={styles.headerText}>Shop by Categories</Text>
-            <TouchableOpacity style={styles.ViewAll} >
+            <TouchableOpacity style={styles.ViewAll} onPress={() => navigation.navigate('CategoryPage')}>
              <Text style={styles.buttonText}>View All</Text>
             </TouchableOpacity>
           </View>

@@ -1,7 +1,10 @@
 import React from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
+import { useNavigation } from "@react-navigation/native"
+
 
 export default function AccountSettings() {
+  const navigation = useNavigation()
   return <>
     <View style={styles.accountSettingsHeader}>
 
@@ -17,7 +20,7 @@ export default function AccountSettings() {
    {/* settingsList */}
 
     <View style={styles.OrdersContainer}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
+    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => navigation.navigate('Orders')}>
     <Image
             style={styles.settingIcon}
             source={{
@@ -25,7 +28,7 @@ export default function AccountSettings() {
             }}
           />
           <Text style={styles.settingText}>My Orders</Text>
-    </View>
+    </TouchableOpacity>
           <Image
             style={styles.ChevronRight}
             source={{
@@ -150,7 +153,7 @@ export default function AccountSettings() {
         <View style={styles.Rectangle4428} />
 
         <View style={styles.OrdersContainerSeller}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
+    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => navigation.navigate("SellerEntry")}>
     <Image
             style={styles.settingIcon}
             source={{
@@ -158,7 +161,7 @@ export default function AccountSettings() {
             }}
           />
           <Text style={styles.settingText}>Become a seller</Text>
-    </View>
+    </TouchableOpacity>
           <Image
             style={styles.ChevronRight}
             source={{

@@ -16,6 +16,10 @@ import OnboardingScreen from '../screens/Onboarding/Onboarding';
 import HomeCustomer from '../screens/Home/HomeCustomer';
 import AccountSettings from '../screens/AccountSettings/AccountSettings';
 import Catgeories from '../screens/Categories/Categories'
+import CategoryPage from '../screens/Categories/CategoryPage'
+import SellerEntry from '../screens/SellerEntry/SellerEntry';
+import Cart from '../screens/Cart/Cart'
+import Orders from '../screens/Orders/Orders';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,7 +73,7 @@ const HomeTabs = () => {
 />
 <Tab.Screen 
   name="Cart"
-  component={LoginScreen} 
+  component={Cart} 
   options={{
     tabBarIcon: ({ focused, color, size }) => (
       focused ? (
@@ -106,6 +110,10 @@ const AppNavigator = () => {
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
         <Stack.Screen name="HomeScreen" component={HomeTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="CategoryPage" component={CategoryPage} options={{ headerShown: false }} />
+        <Stack.Screen name="SellerEntry" component={SellerEntry} options={{ headerShown: false }} />
+        <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
+        <Stack.Screen name="Orders" component={Orders} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
