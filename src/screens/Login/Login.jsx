@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
-import YummyMart from '../../../assets/YummyMart.svg'; // Adjust the path based on your folder structure
+import Verify from '../../../assets/verify.svg'; // Adjust the path based on your folder structure
+import YummyMart from '../../../assets/YummyMart.svg';
 
 
 const Login = () => {
@@ -18,12 +19,7 @@ const Login = () => {
 
   return <>
         <View style={styles.welcomeContainer}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/u47ty9jip7-2475%3A403?alt=media&token=d1695fa8-fb5d-4833-b2bc-9008f7881767",
-            }}
-          />
+          <YummyMart />
           <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
         </View>
 
@@ -31,7 +27,8 @@ const Login = () => {
      <View>
      <Text style={styles.headingText}>Login to Your account</Text> 
     <Text style={styles.description}>Nutella® is famous for its authentic taste of hazelnuts and cocoa, made even more irresistible by its unique creaminess.</Text>
-      <TextInput
+<View style={{position: 'relative'}}>
+<TextInput
         placeholder="Enter Mobile Number"
         style={styles.input1}
         keyboardType="numeric"
@@ -39,6 +36,8 @@ const Login = () => {
         onChangeText={setMobile}
          placeholderTextColor="#979899"
       />
+      <Verify style={styles.verifyIcon}/>
+</View>
       <TextInput
         placeholder="Enter OTP"
         style={styles.input2}
@@ -72,10 +71,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 20
   },
-  logo: {
-    width: 30,
-    height: "100%",
-  },
   WelcomeToYummymart: {
     color: "rgba(112,112,112,1)",
     fontSize: 16,
@@ -83,7 +78,6 @@ const styles = StyleSheet.create({
     fontFamily: "DM Sans, sans-serif",
     fontWeight: 400,
   },
-
   container: {
     flex: 1,
     padding: 30,
@@ -155,10 +149,15 @@ const styles = StyleSheet.create({
     textAlign:'center'
   },
   linkText: {
-    color: 'black', // Link text color
-    textDecorationLine: 'underline', // Underline text
-    marginTop: 0, // Remove extra margin on top of the link
+    color: 'black', 
+    textDecorationLine: 'underline', 
+    marginTop: 0, 
   },
+  verifyIcon:{
+    position:'absolute',
+    top:39,
+    right: 20
+  }
 });
 
 export default Login;

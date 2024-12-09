@@ -93,7 +93,7 @@ return <>
 
 const styles = StyleSheet.create({
     headerText:{
-        fontSize: 16, fontWeight: 500,paddingVertical: 22
+        fontSize: 16, fontWeight: 500,paddingVertical: 22,width: '90%',marginHorizontal: 'auto'
     },
     eachRatingContainer:{
         flexDirection: 'column',

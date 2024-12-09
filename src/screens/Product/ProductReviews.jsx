@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingTop: 6,
         paddingRight:12,
-        paddingBottom: 12,
-        paddingLeft: 6,
+        paddingBottom: 6,
+        paddingLeft: 12,
         borderRadius: 5,
         alignItems: 'center', // To center the text
         justifyContent: 'center', // To center the text

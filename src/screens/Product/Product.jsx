@@ -9,6 +9,7 @@ import ProductDescription from './ProductDescription'
 import FeaturedProducts from '../Home/FeaturedProducts/FeaturedProducts'
 import ProductRating from './ProductRatings'
 import TestimonialContainer from './ProductTestimonial'
+import ProductBottomBar from './ProductBottomBar'
 
 const Product = () => {
     const navigation = useNavigation();
@@ -28,6 +29,7 @@ const Product = () => {
     <FeaturedProducts productHeading={'Similar Products'} topMargin={22}/>
     <ProductRating/>
     <TestimonialContainer/>
+    <ProductBottomBar/>
     </ScrollView>
     </>
 }
@@ -40,7 +42,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         paddingVertical: 22,
-        paddingHorizontal: 22
+        paddingHorizontal: 22,
+        position:'relative'
 },
 topRightBox : {
     display:'flex',
