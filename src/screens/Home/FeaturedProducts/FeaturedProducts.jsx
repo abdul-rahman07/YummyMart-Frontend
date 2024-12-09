@@ -1,12 +1,14 @@
 import React from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
+import { useNavigation } from "@react-navigation/native"
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({productHeading,topMargin}) {
+  const navigation = useNavigation();
   return (
     <View style={styles.CategoriesContainer}>
 
-          <View style={styles.CategoriesHeader}>
-            <Text style={styles.headerText}>Featured Products</Text>
+<View style={[styles.CategoriesHeader, {marginTop: topMargin || 0}]}>
+          <Text style={styles.headerText}>{productHeading ? productHeading : 'Featured Products'}</Text>
             <TouchableOpacity style={styles.ViewAll} >
              <Text style={styles.buttonText}>View All</Text>
             </TouchableOpacity>
@@ -18,7 +20,7 @@ export default function FeaturedProducts() {
 
 {/* categories */}
           <View style={styles.CategoriesListBox}>
-         <View style={styles.CategoryBox}>
+         <TouchableOpacity style={styles.CategoryBox} onPress={() => navigation.navigate('Product')}>
          <View style={styles.productContainer}>
          <Image
             style={styles.product}
@@ -45,7 +47,7 @@ export default function FeaturedProducts() {
         <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
       </View>
 
-         </View>
+         </TouchableOpacity>
 
          <View style={styles.CategoryBox}>
          <View style={styles.productContainer}>

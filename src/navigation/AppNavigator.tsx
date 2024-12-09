@@ -20,6 +20,7 @@ import CategoryPage from '../screens/Categories/CategoryPage'
 import SellerEntry from '../screens/SellerEntry/SellerEntry';
 import Cart from '../screens/Cart/Cart'
 import Orders from '../screens/Orders/Orders';
+import Product from '../screens/Product/Product'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -114,6 +115,7 @@ const AppNavigator = () => {
         <Stack.Screen name="SellerEntry" component={SellerEntry} options={{ headerShown: false }} />
         <Stack.Screen name="Cart" component={Cart} options={{ headerShown: false }} />
         <Stack.Screen name="Orders" component={Orders} options={{ headerShown: false }} />
+        <Stack.Screen name="Product" component={Product} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
