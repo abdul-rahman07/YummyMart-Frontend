@@ -14,14 +14,14 @@ return <>
 
 <View style={styles.enterReviewSection}>
 <TextInput
-        placeholder="Enter OTP"
+        placeholder="Type your feedback"
         style={styles.input2}
-        keyboardType="numeric"
+        keyboardType="text"
         value={''}
          placeholderTextColor="#979899"
       />
             <TouchableOpacity style={styles.reviewButton} >
-        <Text style={styles.buttonText}>Login</Text>
+        <Text style={styles.buttonText}>Add review</Text>
       </TouchableOpacity>
 </View>
 

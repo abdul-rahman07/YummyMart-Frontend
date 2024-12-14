@@ -20,7 +20,7 @@ const Product = () => {
      <ProductBackBtn />
      </TouchableOpacity>
      <View style={styles.topRightBox}>
-    <ProductCart />
+    <ProductCart onPress={() => navigation.navigate('Cart')}/>
     <ProductWishlist />
      </View>
     </View>

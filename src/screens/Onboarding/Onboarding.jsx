@@ -2,19 +2,23 @@ import React, { useState } from 'react';
 import { StyleSheet, Image, Text, View, TextInput,TouchableOpacity } from "react-native"
 import { CheckBox } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // For Material icons support
+import YummyMart from '../../../assets/YummyMart.svg';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function Onboarding() {
+  const navigation = useNavigation();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [check1, setCheck1] = useState(false);
+
+    const handleCompleteOnboard = () => {
+      navigation.navigate('HomeScreen')
+    }
   return (
     <View style={styles.Onboarding}>
         <View style={styles.welcomeContainer}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/u47ty9jip7-2475%3A403?alt=media&token=d1695fa8-fb5d-4833-b2bc-9008f7881767",
-            }}
-          />
+          <YummyMart />
           <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
         </View>
 
@@ -28,16 +32,22 @@ further</Text>
     <TextInput
         placeholder="Enter your name"
         style={styles.input1}
-        keyboardType="numeric"
-        value={''}
+        keyboardType="text"
+        value={name}
          placeholderTextColor="#979899"
+                accessible
+accessibilityLabel="Mobile number name"
+onChangeText={setName}
       />
       <TextInput
         placeholder="Enter your email"
         style={styles.input2}
-        keyboardType="numeric"
-        value={''}
+        keyboardType="email"
+        value={email}
          placeholderTextColor="#979899"
+                accessible
+accessibilityLabel="Mobile number email"
+onChangeText={setEmail}
       />
       {/* checkbox */}
 
@@ -108,9 +118,20 @@ further</Text>
     </View>
 
     <View>
-    <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+    <TouchableOpacity
+  style={[
+    styles.loginButton,
+    (name.length === 0 || email.length === 0) && {
+      backgroundColor: 'rgba(255, 115, 0, 0.5)',
+      borderColor: 'rgba(255, 115, 0, 0.5)',
+    },
+  ]}
+  disabled={name.length === 0 || email.length === 0}
+  onPress={handleCompleteOnboard}
+>
+  <Text style={styles.buttonText}>Complete Onboard</Text>
+</TouchableOpacity>
+
     </View>
     </View>
 

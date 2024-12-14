@@ -2,20 +2,26 @@ import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 import Verify from '../../../assets/verify.svg'; // Adjust the path based on your folder structure
 import YummyMart from '../../../assets/YummyMart.svg';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Login = () => {
-
+  const navigation = useNavigation();
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
+  const [isOtpEnabled, setOtpEnabled] = useState(false);
 
   const handleLogin = () => {
     if (!mobile || !otp) {
       alert('Please enter all fields');
       return;
     }
-    alert('Logged in successfully');
+    navigation.navigate('Onboarding')
   };
+
+  const handleSendOTP = () => {
+   setOtpEnabled(true);
+  }
 
   return <>
         <View style={styles.welcomeContainer}>
@@ -35,20 +41,30 @@ const Login = () => {
         value={mobile}
         onChangeText={setMobile}
          placeholderTextColor="#979899"
+         accessible
+accessibilityLabel="Mobile number input field"
       />
-      <Verify style={styles.verifyIcon}/>
+{mobile.length === 10 && <TouchableOpacity onPress={handleSendOTP} style={styles.verifyIcon}><Verify /></TouchableOpacity>}
 </View>
       <TextInput
         placeholder="Enter OTP"
-        style={styles.input2}
+        style={[styles.input2, !isOtpEnabled && {backgroundColor: '#rgba(249, 249, 249, 1)'}]}
         keyboardType="numeric"
         value={otp}
         onChangeText={setOtp}
          placeholderTextColor="#979899"
+         editable={isOtpEnabled}
+         accessible
+accessibilityLabel="Otp input field"
       />
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+<TouchableOpacity
+  style={[styles.loginButton, otp.length < 4 && { backgroundColor: 'rgba(255, 115, 0, 0.5)', borderColor: 'rgba(255, 115, 0, 0.5)' }]}
+  onPress={handleLogin}
+  disabled={otp.length < 4}
+>
+  <Text style={styles.buttonText}>Login</Text>
+</TouchableOpacity>
+
      </View>
 
       <View style={styles.bottomTextContainer}>
