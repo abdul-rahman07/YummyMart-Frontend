@@ -1,29 +1,17 @@
 import React, { useEffect } from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
+import {
+  useNavigation,
+} from '@react-navigation/native';
 
 export default function Group1000004396() {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
-    const categoriesRes = await fetch('http://localhost:4000/get/categories', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const categoriesData = await categoriesRes.json();
-    setCategories(categoriesData);
-  }
+  const navigation = useNavigation();
   return (
     <View style={styles.CategoriesContainer}>
 
           <View style={styles.CategoriesHeader}>
             <Text style={styles.headerText}>Shop by Categories</Text>
-            <TouchableOpacity style={styles.ViewAll} >
+            <TouchableOpacity style={styles.ViewAll} onPress={() => navigation.navigate('CategoryPage')}>
              <Text style={styles.buttonText}>View All</Text>
             </TouchableOpacity>
           </View>

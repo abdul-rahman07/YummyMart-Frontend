@@ -3,6 +3,7 @@ import { StyleSheet, Image, Text, View, TextInput,TouchableOpacity } from "react
 import { CheckBox } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import YummyMart from '../../../assets/YummyMart.svg';
 
 export default function Onboarding() {
     const route = useRoute();
@@ -42,10 +43,14 @@ export default function Onboarding() {
         body: JSON.stringify({ mobile, ...userDetail }),
       });
       if (submitRes.ok) {
-        navigation.navigate('Home', { mobile });
+        navigation.navigate('HomeScreen', { mobile });
       } else {
         handleAlert('Failed to submit details. Please try again');
       }
+    }
+
+    const handleCompleteOnboard = () => {
+      navigation.navigate('HomeScreen', { mobile });
     }
 
   return (
@@ -55,12 +60,7 @@ export default function Onboarding() {
       </View>}
       <View style={styles.Onboarding}>
         <View style={styles.welcomeContainer}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/u47ty9jip7-2475%3A403?alt=media&token=d1695fa8-fb5d-4833-b2bc-9008f7881767",
-            }}
-          />
+          <YummyMart />
           <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
         </View>
 
@@ -76,6 +76,8 @@ export default function Onboarding() {
               style={styles.input1}
               keyboardType="numeric"
               value={userDetail.name}
+              accessible
+              accessibilityLabel="Mobile number name"
               onChangeText={(text) => handleUserDetailChange('name', text)}
               placeholderTextColor="#979899"
             />
@@ -86,6 +88,8 @@ export default function Onboarding() {
               value={userDetail.email}
               onChangeText={(text) => handleUserDetailChange('email', text)}
               placeholderTextColor="#979899"
+              accessible
+              accessibilityLabel="Mobile number email"
             />
 
             {/* checkbox */}
@@ -154,7 +158,23 @@ export default function Onboarding() {
                     }
             />
 
-          </View>
+    <View>
+      <TouchableOpacity
+        style={[
+          styles.loginButton,
+          (name.length === 0 || email.length === 0) && {
+            backgroundColor: 'rgba(255, 115, 0, 0.5)',
+            borderColor: 'rgba(255, 115, 0, 0.5)',
+          },
+        ]}
+        disabled={name.length === 0 || email.length === 0}
+        onPress={handleCompleteOnboard}
+      >
+        <Text style={styles.buttonText}>Complete Onboard</Text>
+      </TouchableOpacity>
+
+    </View>
+    </View>
 
         <View>
         <TouchableOpacity style={styles.loginButton} disabled={!enableSubmit} onPress={handleSubmit} >
