@@ -9,21 +9,66 @@ const Login = () => {
   const navigation = useNavigation();
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
+  const [enableLogin, setEnableLogin] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [isOtpEnabled, setOtpEnabled] = useState(false);
 
-  const handleLogin = () => {
-    if (!mobile || !otp) {
-      alert('Please enter all fields');
-      return;
-    }
-    navigation.navigate('Onboarding')
-  };
-
-  const handleSendOTP = () => {
-   setOtpEnabled(true);
+  const handleAlert = (alertMsg) => {
+    setShowAlert(true);
+      setAlertMessage(alertMsg);
+      setTimeout(() => {
+        setShowAlert(false);
+        setAlertMessage('');
+      }, 3000);
   }
 
+  const sendOTP = async () => {
+    if (!mobile) {
+      handleAlert('Please enter mobile number');
+      return;
+    }
+    const sendOTPRes = await fetch('http://localhost:4000/send/otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile }),
+    });
+    if (sendOTPRes.ok) {
+      handleAlert('OTP sent successfully');
+      setEnableLogin(true);
+    } else {
+      handleAlert('Failed to send OTP');
+    }
+  }
+
+  const handleLogin = async () => {
+    if (!mobile || !otp) {
+      handleAlert('Please enter all fields');
+      return;
+    }
+    const verifyOTPRes = await fetch('http://localhost:4000/otp/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile, otp }),
+    });
+    const verifyOTPData = await verifyOTPRes.json();
+    handleAlert(verifyOTPData.message);
+    if(verifyOTPData.isVerified && verifyOTPData.isNewUser) {
+      navigation.navigate('Onboarding', { mobile });
+    } else if(verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
+      navigation.navigate('Home', { mobile });
+    }
+    return;
+  };
+
   return <>
+    {showAlert && <View style={styles.alertContainer}>
+          <Text style={styles.alertText}>{alertMessage}</Text>
+      </View>}
         <View style={styles.welcomeContainer}>
           <YummyMart />
           <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
@@ -44,7 +89,7 @@ const Login = () => {
          accessible
 accessibilityLabel="Mobile number input field"
       />
-{mobile.length === 10 && <TouchableOpacity onPress={handleSendOTP} style={styles.verifyIcon}><Verify /></TouchableOpacity>}
+{mobile.length === 10 && <TouchableOpacity onPress={sendOTP} style={styles.verifyIcon}><Verify /></TouchableOpacity>}
 </View>
       <TextInput
         placeholder="Enter OTP"
@@ -154,6 +199,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // To center the text
     marginTop: 4,
   },
+  sendOTPButton: {
+    backgroundColor: "#FF7300",
+    borderColor: "#FF7300",
+    borderWidth: 1,
+    width: '30%',
+    paddingTop: 16,
+    paddingRight: 20,
+    paddingBottom: 16,
+    paddingLeft: 20,
+    borderRadius: 100,
+    alignItems: 'center', // To center the text
+    justifyContent: 'center', // To center the text
+    marginTop: 4,
+  },
   buttonText: {
     color: '#fff',
     fontSize: 14,
@@ -168,6 +227,18 @@ const styles = StyleSheet.create({
     color: 'black', 
     textDecorationLine: 'underline', 
     marginTop: 0, 
+  },
+  alertContainer: {
+    position: 'absolute',
+    top: '10px',
+    left: 0,
+    right: 0,
+    backgroundColor: '#4f4b48',
+    padding: 10,
+  },
+  alertText: {
+    color: '#fff',
+    textAlign: 'center',
   },
   verifyIcon:{
     position:'absolute',
