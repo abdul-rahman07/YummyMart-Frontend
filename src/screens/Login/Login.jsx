@@ -9,18 +9,17 @@ const Login = () => {
   const navigation = useNavigation();
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
-  const [enableLogin, setEnableLogin] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [isOtpEnabled, setOtpEnabled] = useState(false);
 
   const handleAlert = (alertMsg) => {
     setShowAlert(true);
-      setAlertMessage(alertMsg);
-      setTimeout(() => {
-        setShowAlert(false);
-        setAlertMessage('');
-      }, 3000);
+    setAlertMessage(alertMsg);
+    setTimeout(() => {
+      setShowAlert(false);
+      setAlertMessage('');
+    }, 3000);
   }
 
   const sendOTP = async () => {
@@ -37,7 +36,7 @@ const Login = () => {
     });
     if (sendOTPRes.ok) {
       handleAlert('OTP sent successfully');
-      setEnableLogin(true);
+      setOtpEnabled(true);
     } else {
       handleAlert('Failed to send OTP');
     }
@@ -48,7 +47,7 @@ const Login = () => {
       handleAlert('Please enter all fields');
       return;
     }
-    const verifyOTPRes = await fetch('http://localhost:4000/otp/verify', {
+    const verifyOTPRes = await fetch('http://localhost:4000/verify/otp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -57,68 +56,68 @@ const Login = () => {
     });
     const verifyOTPData = await verifyOTPRes.json();
     handleAlert(verifyOTPData.message);
-    if(verifyOTPData.isVerified && verifyOTPData.isNewUser) {
+    if (verifyOTPData.isVerified && verifyOTPData.isNewUser) {
       navigation.navigate('Onboarding', { mobile });
-    } else if(verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
-      navigation.navigate('Home', { mobile });
+    } else if (verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
+      navigation.navigate('HomeScreen', { mobile });
     }
     return;
   };
 
   return <>
     {showAlert && <View style={styles.alertContainer}>
-          <Text style={styles.alertText}>{alertMessage}</Text>
-      </View>}
-        <View style={styles.welcomeContainer}>
-          <YummyMart />
-          <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
-        </View>
+      <Text style={styles.alertText}>{alertMessage}</Text>
+    </View>}
+    <View style={styles.welcomeContainer}>
+      <YummyMart />
+      <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
+    </View>
 
     <View style={styles.container}>
-     <View>
-     <Text style={styles.headingText}>Login to Your account</Text> 
-    <Text style={styles.description}>Nutella® is famous for its authentic taste of hazelnuts and cocoa, made even more irresistible by its unique creaminess.</Text>
-<View style={{position: 'relative'}}>
-<TextInput
-        placeholder="Enter Mobile Number"
-        style={styles.input1}
-        keyboardType="numeric"
-        value={mobile}
-        onChangeText={setMobile}
-         placeholderTextColor="#979899"
-         accessible
-accessibilityLabel="Mobile number input field"
-      />
-{mobile.length === 10 && <TouchableOpacity onPress={sendOTP} style={styles.verifyIcon}><Verify /></TouchableOpacity>}
-</View>
-      <TextInput
-        placeholder="Enter OTP"
-        style={[styles.input2, !isOtpEnabled && {backgroundColor: '#rgba(249, 249, 249, 1)'}]}
-        keyboardType="numeric"
-        value={otp}
-        onChangeText={setOtp}
-         placeholderTextColor="#979899"
-         editable={isOtpEnabled}
-         accessible
-accessibilityLabel="Otp input field"
-      />
-<TouchableOpacity
-  style={[styles.loginButton, otp.length < 4 && { backgroundColor: 'rgba(255, 115, 0, 0.5)', borderColor: 'rgba(255, 115, 0, 0.5)' }]}
-  onPress={handleLogin}
-  disabled={otp.length < 4}
->
-  <Text style={styles.buttonText}>Login</Text>
-</TouchableOpacity>
+      <View>
+        <Text style={styles.headingText}>Login to Your account</Text>
+        <Text style={styles.description}>Nutella® is famous for its authentic taste of hazelnuts and cocoa, made even more irresistible by its unique creaminess.</Text>
+        <View style={{ position: 'relative' }}>
+          <TextInput
+            placeholder="Enter Mobile Number"
+            style={styles.input1}
+            keyboardType="numeric"
+            value={mobile}
+            onChangeText={setMobile}
+            placeholderTextColor="#979899"
+            accessible
+            accessibilityLabel="Mobile number input field"
+          />
+          {mobile.length === 10 && <TouchableOpacity onPress={sendOTP} style={styles.verifyIcon}><Verify /></TouchableOpacity>}
+        </View>
+        <TextInput
+          placeholder="Enter OTP"
+          style={[styles.input2, !isOtpEnabled && { backgroundColor: '#rgba(249, 249, 249, 1)' }]}
+          keyboardType="numeric"
+          value={otp}
+          onChangeText={setOtp}
+          placeholderTextColor="#979899"
+          editable={isOtpEnabled}
+          accessible
+          accessibilityLabel="Otp input field"
+        />
+        <TouchableOpacity
+          style={[styles.loginButton, otp.length < 4 && { backgroundColor: 'rgba(255, 115, 0, 0.5)', borderColor: 'rgba(255, 115, 0, 0.5)' }]}
+          onPress={handleLogin}
+          disabled={otp.length < 4}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
 
-     </View>
+      </View>
 
       <View style={styles.bottomTextContainer}>
-      <Text style={styles.policyText}>By clicking on “Login” you are agreeing to our <Text style={styles.linkText}>terms of use</Text> </Text>
+        <Text style={styles.policyText}>By clicking on “Login” you are agreeing to our <Text style={styles.linkText}>terms of use</Text> </Text>
 
       </View>
 
     </View>
-    </>
+  </>
 };
 
 const styles = StyleSheet.create({
@@ -147,17 +146,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     marginTop: 60
   },
-  headingText:{
+  headingText: {
     fontSize: 40,
     fontWeight: '500',
     color: '#06161C',
   },
-  description:{
+  description: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: 'regular',
     color: '#979899',
-    marginTop:8
+    marginTop: 8
   },
   input1: {
     width: '100%',
@@ -218,15 +217,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold', // Optional, for a bold text
   },
-  policyText:{
+  policyText: {
     color: '#A9A9AA',
     fontSize: 16,
-    textAlign:'center'
+    textAlign: 'center'
   },
   linkText: {
-    color: 'black', 
-    textDecorationLine: 'underline', 
-    marginTop: 0, 
+    color: 'black',
+    textDecorationLine: 'underline',
+    marginTop: 0,
   },
   alertContainer: {
     position: 'absolute',
@@ -240,9 +239,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
-  verifyIcon:{
-    position:'absolute',
-    top:39,
+  verifyIcon: {
+    position: 'absolute',
+    top: 39,
     right: 20
   }
 });
