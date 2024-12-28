@@ -34,12 +34,12 @@ export default function HomeCustomer() {
       body: JSON.stringify({ mobile }),
     });
     let userDetailsData = await userDetailsRes.json();
-    if(userDetailsData.store) {
+    if (userDetailsData.store) {
       userDetailsData.isBuyer = true;
-    } 
-    setUserDetails({...userDetails, ...userDetailsData});
+    }
+    setUserDetails({ ...userDetails, ...userDetailsData });
 
-    if(userDetailsData.location === '') {
+    if (userDetailsData.location === '') {
       requestLocationPermission();
     }
   }
@@ -105,18 +105,18 @@ export default function HomeCustomer() {
   };
 
   return <>
-          <ScrollView>
-            {
-              loading ? <ActivityIndicator size="large" color="#0000ff" /> : <>
-              <Header userDetails={userDetails} />
-              <SearchBar/>
-              <HomeCategories />
-              <HomeCarousal/>
-              <FeaturedProducts />
-              <Deals />
-              </>
-            }
-          </ScrollView>
+    <ScrollView>
+      {
+        loading ? <ActivityIndicator size="large" color="#0000ff" /> : <>
+          <Header userDetails={userDetails} />
+          <SearchBar />
+          <HomeCategories />
+          <HomeCarousal />
+          <FeaturedProducts />
+          <Deals />
         </>
+      }
+    </ScrollView>
+  </>
 }
 

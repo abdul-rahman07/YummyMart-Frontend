@@ -1,57 +1,53 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, Text, View, TextInput,TouchableOpacity } from "react-native"
+import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from "react-native"
 import { CheckBox } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import YummyMart from '../../../assets/YummyMart.svg';
 
 export default function Onboarding() {
-    const route = useRoute();
-    const navigation = useNavigation();
-    const { mobile } = route.params;
-    const [userDetail, setUserDetail] = useState({
-      name: '',
-      email: '',
-      receiveWhatsapp: false,
-      receiveSMS: false,
-      receiveEmail: false,
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { mobile } = route.params;
+  const [userDetail, setUserDetail] = useState({
+    name: '',
+    email: '',
+    receiveWhatsapp: false,
+    receiveSMS: false,
+    receiveEmail: false,
+  });
+  const [enableSubmit, setEnableSubmit] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleAlert = (alertMsg) => {
+    setShowAlert(true);
+    setAlertMessage(alertMsg);
+    setTimeout(() => {
+      setShowAlert(false);
+      setAlertMessage('');
+    }, 3000);
+  }
+
+  const handleUserDetailChange = (key, value) => {
+    setUserDetail({ ...userDetail, [key]: value });
+    setEnableSubmit(userDetail.name && userDetail.email);
+  }
+
+  const handleCompleteOnboard = async () => {
+    const submitRes = await fetch('http://localhost:4000/user/onboarding', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile, ...userDetail }),
     });
-    const [enableSubmit, setEnableSubmit] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
-
-    const handleAlert = (alertMsg) => {
-      setShowAlert(true);
-        setAlertMessage(alertMsg);
-        setTimeout(() => {
-          setShowAlert(false);
-          setAlertMessage('');
-        }, 3000);
-    }
-
-    const handleUserDetailChange = (key, value) => {
-      setUserDetail({...userDetail, [key]: value});
-      setEnableSubmit(userDetail.name && userDetail.email);
-    }
-
-    const handleSubmit = async () => {
-      const submitRes = await fetch('http://localhost:4000/user/onboarding', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ mobile, ...userDetail }),
-      });
-      if (submitRes.ok) {
-        navigation.navigate('HomeScreen', { mobile });
-      } else {
-        handleAlert('Failed to submit details. Please try again');
-      }
-    }
-
-    const handleCompleteOnboard = () => {
+    if (submitRes.ok) {
       navigation.navigate('HomeScreen', { mobile });
+    } else {
+      handleAlert('Failed to submit details. Please try again');
     }
+  }
 
   return (
     <>
@@ -67,9 +63,9 @@ export default function Onboarding() {
         <View style={styles.container}>
 
           <View>
-            <Text style={styles.headingText}>Please fill these 
-            details to proceed 
-            further</Text> 
+            <Text style={styles.headingText}>Please fill these
+              details to proceed
+              further</Text>
             <Text style={styles.description}>Nutella® is famous for its authentic taste of hazelnuts and cocoa, made even more irresistible by its unique creaminess.</Text>
             <TextInput
               placeholder="Enter your name"
@@ -101,19 +97,19 @@ export default function Onboarding() {
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginVertical: 0, 
+                marginVertical: 0,
                 padding: 0,
                 marginTop: 20
               }}
               textStyle={{
                 margin: 0,
-                padding: 0, 
-              }}        checkedIcon={
-                      <Icon name="check-box" size={24} color="#0855AE" />
-                    }
-                    uncheckedIcon={
-                      <Icon name="check-box-outline-blank" size={24} color="gray" />
-                    }
+                padding: 0,
+              }} checkedIcon={
+                <Icon name="check-box" size={24} color="#0855AE" />
+              }
+              uncheckedIcon={
+                <Icon name="check-box-outline-blank" size={24} color="gray" />
+              }
             />
 
             <CheckBox
@@ -123,18 +119,18 @@ export default function Onboarding() {
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginVertical: 4, 
-                padding: 0, 
+                marginVertical: 4,
+                padding: 0,
               }}
               textStyle={{
-                margin: 0, 
-                padding: 0, 
-              }}        checkedIcon={
-                      <Icon name="check-box" size={24} color="#0855AE" />
-                    }
-                    uncheckedIcon={
-                      <Icon name="check-box-outline-blank" size={24} color="gray" />
-                    }
+                margin: 0,
+                padding: 0,
+              }} checkedIcon={
+                <Icon name="check-box" size={24} color="#0855AE" />
+              }
+              uncheckedIcon={
+                <Icon name="check-box-outline-blank" size={24} color="gray" />
+              }
             />
 
             <CheckBox
@@ -144,43 +140,38 @@ export default function Onboarding() {
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderWidth: 0,
-                marginVertical: 4, 
-                padding: 0, 
+                marginVertical: 4,
+                padding: 0,
               }}
               textStyle={{
-                margin: 0, 
-                padding: 0, 
-              }}        checkedIcon={
-                      <Icon name="check-box" size={24} color="#0855AE" />
-                    }
-                    uncheckedIcon={
-                      <Icon name="check-box-outline-blank" size={24} color="gray" />
-                    }
+                margin: 0,
+                padding: 0,
+              }} checkedIcon={
+                <Icon name="check-box" size={24} color="#0855AE" />
+              }
+              uncheckedIcon={
+                <Icon name="check-box-outline-blank" size={24} color="gray" />
+              }
             />
 
-    <View>
-      <TouchableOpacity
-        style={[
-          styles.loginButton,
-          (name.length === 0 || email.length === 0) && {
-            backgroundColor: 'rgba(255, 115, 0, 0.5)',
-            borderColor: 'rgba(255, 115, 0, 0.5)',
-          },
-        ]}
-        disabled={name.length === 0 || email.length === 0}
-        onPress={handleCompleteOnboard}
-      >
-        <Text style={styles.buttonText}>Complete Onboard</Text>
-      </TouchableOpacity>
+            <View>
+              <TouchableOpacity
+                style={[
+                  styles.loginButton,
+                  (name.length === 0 || email.length === 0) && {
+                    backgroundColor: 'rgba(255, 115, 0, 0.5)',
+                    borderColor: 'rgba(255, 115, 0, 0.5)',
+                  },
+                ]}
+                disabled={!enableSubmit}
+                onPress={handleCompleteOnboard}
+              >
+                <Text style={styles.buttonText}>Complete Onboard</Text>
+              </TouchableOpacity>
 
-    </View>
-    </View>
+            </View>
+          </View>
 
-        <View>
-        <TouchableOpacity style={styles.loginButton} disabled={!enableSubmit} onPress={handleSubmit} >
-            <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-        </View>
         </View>
 
       </View>
@@ -228,17 +219,17 @@ const styles = StyleSheet.create({
     alignItems: 'start',
     marginTop: 60
   },
-  headingText:{
+  headingText: {
     fontSize: 40,
     fontWeight: '500',
     color: '#06161C',
   },
-  description:{
+  description: {
     fontSize: 16,
     lineHeight: 24,
     fontWeight: 'regular',
     color: '#979899',
-    marginTop:8
+    marginTop: 8
   },
   input1: {
     width: '100%',
