@@ -9,7 +9,7 @@ import Stars from '../../../assets/stars.svg'
 
 const ProductDescription = () => {
     return <>
-    <View style={{position: 'relative'}}>
+    <View style={{position: 'relative', marginTop : 8}}>
         <View style={styles.productDetailContainer}>
 
         <View style={styles.productDetailHeader}>
