@@ -35,7 +35,8 @@ export default function Onboarding() {
   }
 
   const handleCompleteOnboard = async () => {
-    const submitRes = await fetch('http://localhost:4000/user/onboarding', {
+    console.log({ mobile, ...userDetail })
+    const submitRes = await fetch('http://10.0.2.2:4000/user/onboarding', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -105,10 +106,10 @@ export default function Onboarding() {
                 margin: 0,
                 padding: 0,
               }} checkedIcon={
-                <Icon name="check-box" size={24} color="#0855AE" />
+                <Icon name="check-box" type="MaterialIcons" size={24} color="#0855AE" />
               }
               uncheckedIcon={
-                <Icon name="check-box-outline-blank" size={24} color="gray" />
+                <Icon name="check-box-outline-blank" type="MaterialIcons" size={24} color="gray" />
               }
             />
 
@@ -126,10 +127,10 @@ export default function Onboarding() {
                 margin: 0,
                 padding: 0,
               }} checkedIcon={
-                <Icon name="check-box" size={24} color="#0855AE" />
+                <Icon name="check-box" type="MaterialIcons" size={24} color="#0855AE" />
               }
               uncheckedIcon={
-                <Icon name="check-box-outline-blank" size={24} color="gray" />
+                <Icon name="check-box-outline-blank" type="MaterialIcons" size={24} color="gray" />
               }
             />
 
@@ -147,10 +148,10 @@ export default function Onboarding() {
                 margin: 0,
                 padding: 0,
               }} checkedIcon={
-                <Icon name="check-box" size={24} color="#0855AE" />
+                <Icon name="check-box" type="MaterialIcons" size={24} color="#0855AE" />
               }
               uncheckedIcon={
-                <Icon name="check-box-outline-blank" size={24} color="gray" />
+                <Icon name="check-box-outline-blank" type="MaterialIcons" size={24} color="gray" />
               }
             />
 
@@ -158,7 +159,7 @@ export default function Onboarding() {
               <TouchableOpacity
                 style={[
                   styles.loginButton,
-                  (name.length === 0 || email.length === 0) && {
+                  (userDetail.name.length === 0 || userDetail.email.length === 0) && {
                     backgroundColor: 'rgba(255, 115, 0, 0.5)',
                     borderColor: 'rgba(255, 115, 0, 0.5)',
                   },
@@ -269,7 +270,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center', // To center the text
     justifyContent: 'center', // To center the text
-    marginTop: 4,
+    marginTop: 24,
   },
   buttonText: {
     color: '#fff',

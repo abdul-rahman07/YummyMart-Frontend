@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Pressable } from 'react-native';
 import Verify from '../../../assets/verify.svg'; // Adjust the path based on your folder structure
 import YummyMart from '../../../assets/YummyMart.svg';
 import { useNavigation } from '@react-navigation/native';
@@ -27,41 +27,53 @@ const Login = () => {
       handleAlert('Please enter mobile number');
       return;
     }
-    const sendOTPRes = await fetch('http://localhost:4000/send/otp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ mobile }),
-    });
-    if (sendOTPRes.ok) {
-      handleAlert('OTP sent successfully');
-      setOtpEnabled(true);
-    } else {
-      handleAlert('Failed to send OTP');
+
+    try {
+      const sendOTPRes = await fetch('http://10.0.2.2:4000/send/otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mobile }),
+      });
+    
+      if (sendOTPRes.ok) {
+        handleAlert('OTP sent successfully');
+        setOtpEnabled(true);
+      } else {
+        const errorData = await sendOTPRes.json();
+        console.log('Response error data:', errorData);
+        handleAlert('Failed to send OTP');
+      }
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      handleAlert('An error occurred while sending OTP');
     }
-  }
+  };  
 
   const handleLogin = async () => {
     if (!mobile || !otp) {
       handleAlert('Please enter all fields');
       return;
     }
-    const verifyOTPRes = await fetch('http://localhost:4000/verify/otp', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ mobile, otp }),
-    });
-    const verifyOTPData = await verifyOTPRes.json();
-    handleAlert(verifyOTPData.message);
-    if (verifyOTPData.isVerified && verifyOTPData.isNewUser) {
-      navigation.navigate('Onboarding', { mobile });
-    } else if (verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
-      navigation.navigate('HomeScreen', { mobile });
+    try{
+      const verifyOTPRes = await fetch('http://10.0.2.2:4000/verify/otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ mobile, otp }),
+      });
+      const verifyOTPData = await verifyOTPRes.json();
+      handleAlert(verifyOTPData.message);
+      if (verifyOTPData.isVerified && verifyOTPData.isNewUser) {
+        navigation.navigate('Onboarding', { mobile });
+      } else if (verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
+        navigation.navigate('HomeScreen', { mobile });
+      }
+    }catch(err){
+      handleAlert('Error while login')
     }
-    return;
   };
 
   return <>
@@ -88,7 +100,15 @@ const Login = () => {
             accessible
             accessibilityLabel="Mobile number input field"
           />
-          {mobile.length === 10 && <TouchableOpacity onPress={sendOTP} style={styles.verifyIcon}><Verify /></TouchableOpacity>}
+          {mobile.length === 10 && !isOtpEnabled ? (
+       
+             <Text style={styles.send} onPress={sendOTP}>send</Text>
+        
+          ) : mobile.length === 10 && isOtpEnabled  ? (
+            <TouchableOpacity  style={styles.verifyIcon}><Verify /></TouchableOpacity>
+          ) : (
+            null
+          )}
         </View>
         <TextInput
           placeholder="Enter OTP"
@@ -243,6 +263,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 39,
     right: 20
+  },
+  send: {
+    position: 'absolute',
+    top: 40,
+    left: 300,
+    color:"#0856AF",
   }
 });
 

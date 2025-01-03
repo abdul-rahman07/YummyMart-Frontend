@@ -44,16 +44,11 @@ export default function FeaturedProducts({ productHeading, topMargin }) {
             <View style={styles.priceContainer}>
               <Text style={styles.originalPrice}>630da</Text>
             </View>
-            <Image
-              style={styles.plusIcon}
-              source={{
-                uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757",
-              }}
-            />
+            <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
           </View>
         </TouchableOpacity>
 
-      </View>
+      
 
       <View style={styles.CategoryBox}>
         <View style={styles.productContainer}>
@@ -196,6 +191,7 @@ export default function FeaturedProducts({ productHeading, topMargin }) {
             <Text style={styles.originalPrice}>630da</Text>
           </View>
           <Text style={styles.productExcerpt}>Bell Pepper Nutella karmen lopu...</Text>
+        </View>
         </View>
 
       </View>

@@ -1,53 +1,32 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import AddWishlist from '../../../assets/AddWishlist.svg'
-import ShareIcon from '../../../assets/shareIcon.svg'
-import Logo from '../../../assets/YummyMart.svg'
-import RupeeIcon from '../../../assets/RupeeIcon.svg';
-
+import React from 'react';
+import { View, Image, StyleSheet } from 'react-native';
+import Swiper from 'react-native-swiper';
 
 const ProductPage = () => {
+
   const images = [
     { id: '1', source: require('../../../assets/productImage.png') },
     { id: '2', source: require('../../../assets/productImage.png') },
     { id: '3', source: require('../../../assets/productImage.png') },
   ];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const renderDots = () => {
-    return images.map((_, index) => (
-      <TouchableOpacity key={index} onPress={() => setActiveIndex(index)}>
-        <View
-          style={[
-            styles.dot,
-            activeIndex === index ? styles.activeDot : styles.inactiveDot,
-          ]}
-        />
-      </TouchableOpacity>
-    ));
-  };
-
   return (
     <View style={styles.container}>
-      <FlatList
-        data={images}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Image source={item.source} style={styles.image} />
-        // <Text>sjdcbiovnhvi jncudwhvuiwhfowejf iuechiwehfwifwe ukiehfioewfhuiwo hjvdyucv</Text>
-        )}
-        onScroll={(event) => {
-          const contentOffsetX = event.nativeEvent.contentOffset.x;
-          const newIndex = Math.round(contentOffsetX / styles.image.width);
-          setActiveIndex(newIndex);
-        }}
-      />
-
-      <View style={styles.dotContainer}>{renderDots()}</View>
+      <Swiper
+      style={styles.swiper}
+        dotColor="#FFD9BA"
+        activeDotColor="#FF7300"
+        showsPagination={true}
+        autoplay={true}
+        autoplayTimeout={5}
+    height={480}
+      >
+        {images.map((item) => (
+          <View key={item.id} style={styles.slide}>
+            <Image source={item.source} style={styles.image} />
+          </View>
+        ))}
+      </Swiper>
 
     </View>
   );
@@ -60,32 +39,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  slide: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+  },
   image: {
-    width: 400,
+    width: "90%",
     height: 400,
-
+    resizeMode: "cover",
+	marginTop : 8,
+	borderRadius: 5,
   },
-  dotContainer: {
-    flexDirection: 'row',
-    marginVertical: 10,
-    backgroundColor: 'white',
-    paddingHorizontal : 16,
-    paddingVertical : 12,
-    borderRadius: 6
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 3,
-  },
-  activeDot: {
-    backgroundColor: '#000',
-  },
-  inactiveDot: {
-    backgroundColor: '#ccc',
-  },
-
 });
 
 export default ProductPage;

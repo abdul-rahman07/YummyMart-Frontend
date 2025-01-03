@@ -1,10 +1,31 @@
-import React, { useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
 import {
   useNavigation,
 } from '@react-navigation/native';
 
-export default function Group1000004396() {
+export default function HomeCategories() {
+  const [categories, setCategories] = useState([])
+
+  const fetchCategories = async () => {
+    try{
+      const categoriesList = await fetch('http://10.0.2.2:4000/get/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      let categoriesListData = await categoriesList.json();
+      setCategories(categoriesListData)
+    }catch(err){
+    console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories()
+  },[])
+
   const navigation = useNavigation();
   return (
     <View style={styles.CategoriesContainer}>
@@ -20,11 +41,11 @@ export default function Group1000004396() {
           <View style={styles.CategoriesListBox}>
             {
               categories.map((category) => (
-                <View style={styles.CategoryBox}>
+                <View style={styles.CategoryBox} key={category.id}>
                   <Image
                     style={styles.CategoryImage}
                     source={{
-                      uri: category.image,
+                      uri: category.image_url,
                     }}
                   />
                   <Text style={styles.CategoryText}>{category.name}</Text>

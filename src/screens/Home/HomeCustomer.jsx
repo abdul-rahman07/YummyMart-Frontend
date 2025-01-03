@@ -1,4 +1,5 @@
-import React, { useEffect } from "react"
+import React, { useState,useEffect } from "react"
+import { ActivityIndicator } from "react-native"
 import Header from '../Header/Header'
 import SearchBar from '../SearchBar/Searchbar'
 import HomeCategories from '../Home/HomeCategories/HomeCategories'
@@ -12,7 +13,8 @@ import { PERMISSIONS, request, check, RESULTS } from "react-native-permissions";
 
 export default function HomeCustomer() {
   const route = useRoute();
-  const { mobile } = route.params;
+  const { mobile } = route.params || {mobile :"9600528513"}; // Add fallback to avoid undefined
+  
   const [userDetails, setUserDetails] = useState({
     name: '',
     email: '',
@@ -20,13 +22,10 @@ export default function HomeCustomer() {
     location: ''
   });
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchUserDetails();
-  }, []);
+  console.log(userDetails)
 
   const fetchUserDetails = async () => {
-    const userDetailsRes = await fetch('http://localhost:4000/get/user', {
+    const userDetailsRes = await fetch('http://10.0.2.2:4000/get/user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,11 +37,16 @@ export default function HomeCustomer() {
       userDetailsData.isBuyer = true;
     }
     setUserDetails({ ...userDetails, ...userDetailsData });
+    setLoading(false)
 
     if (userDetailsData.location === '') {
       requestLocationPermission();
     }
   }
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
 
   const requestLocationPermission = async () => {
     try {
@@ -112,7 +116,7 @@ export default function HomeCustomer() {
           <SearchBar />
           <HomeCategories />
           <HomeCarousal />
-          <FeaturedProducts />
+          <FeaturedProducts topMargin={0}/>
           <Deals />
         </>
       }

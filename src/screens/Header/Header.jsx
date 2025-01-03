@@ -1,7 +1,7 @@
 import React from "react"
 import { StyleSheet, Image, Text, View, ImageBackground } from "react-native"
 
-export default function Group1000004395({userDetails}) {
+export default function Header({userDetails}) {
   return (
 
 
