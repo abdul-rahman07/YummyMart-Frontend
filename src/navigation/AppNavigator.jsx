@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -105,6 +105,12 @@ const HomeTabs = () => {
 };
 
 const AppNavigator = () => {
+  const [userType, setUserType] = React.useState('customer');
+  useEffect(() => {
+    // call API to get user type
+    // setUserType(response.userType);
+  
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Product">

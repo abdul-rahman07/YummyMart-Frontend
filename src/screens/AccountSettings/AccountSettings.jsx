@@ -1,10 +1,16 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 
 
 export default function AccountSettings() {
   const navigation = useNavigation()
+  const [ sellerFormStatus, setSellerFormStatus ] = React.useState('not-submitted') // 'submitted', 'pending', 'not-submitted', 'rejected'
+
+  useEffect(() => {
+      // api call to get status of seller form submission
+      // setSellerFormStatus(response.status)
+    }, [])
   return <>
     <View style={styles.accountSettingsHeader}>
 
@@ -153,7 +159,9 @@ export default function AccountSettings() {
         <View style={styles.Rectangle4428} />
 
         <View style={styles.OrdersContainerSeller}>
-    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => navigation.navigate("SellerEntry")}>
+    {
+      sellerFormStatus === 'not-submitted' ?
+      <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => navigation.navigate("SellerEntry")}>
     <Image
             style={styles.settingIcon}
             source={{
@@ -161,7 +169,44 @@ export default function AccountSettings() {
             }}
           />
           <Text style={styles.settingText}>Become a seller</Text>
-    </TouchableOpacity>
+    </TouchableOpacity> :
+    sellerFormStatus === 'pending' ?
+    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
+    <Image
+            style={styles.settingIcon}
+            source={{
+              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+            }}
+          />
+          <Text style={styles.settingText}>Under progress</Text>
+    </TouchableOpacity> :
+    sellerFormStatus === 'submitted' ?
+    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
+    <Image
+            style={styles.settingIcon}
+            source={{
+              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+            }}
+          />
+          <Text style={styles.settingText}>You're already a seller</Text>
+    </TouchableOpacity>: 
+    sellerFormStatus === 'rejected' ?
+    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => {
+      // show a popup
+      // reasons
+      // 1. Invalid GST number
+      // 2. Invalid Pan number
+      // Buttons - 1. Close, 2. Resubmit
+    }}>
+    <Image
+            style={styles.settingIcon}
+            source={{
+              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+            }}
+          />
+          <Text style={styles.settingText}>Rejected. Click here to view details</Text>
+    </TouchableOpacity> : null
+    }
           <Image
             style={styles.ChevronRight}
             source={{

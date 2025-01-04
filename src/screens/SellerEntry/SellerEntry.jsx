@@ -4,6 +4,8 @@ import { useNavigation } from "@react-navigation/native"
 
 export default function SellerEntry() {
     const navigation = useNavigation()
+    const [gst_number, setGst_number] = React.useState('')  //31837917363
+    
   return <>
     <View style={styles.accountSettingsHeader}>
 <TouchableOpacity onPress={() => navigation.goBack()} style={{height: 21}}>
@@ -37,7 +39,7 @@ export default function SellerEntry() {
         placeholder="Enter OTP"
         style={styles.input2}
         keyboardType="numeric"
-        value={"31837917363"}
+        value={gst_number}
          placeholderTextColor="#979899"
       />
             <TouchableOpacity style={styles.loginButton}>
@@ -45,7 +47,25 @@ export default function SellerEntry() {
       </TouchableOpacity>
       </View>
     </View>
+            {
+              // form
+              // 1. Seller Name,
+              // 2. Contact details,
+              // 3. Sellers type (Manufacturer, Distrubutor, Delar, Wholesale, Retail, Trading). 
+              // 4. GST number
+              // 5. Pan card number give Auto write from GST number itself. 
+              // 5. Seller Address (Auto location verification is better or give manual entry itself)
+              // 5. Fssai license number. 
+              // 6. Udyam (MSME lisence number).
 
+              // Uploading of documents except bank details 
+              // 1. If a seller is Delar or Distributer auto enable option to upload Delar or Distributer certificate lisence from their brands.
+              // 2. GST certificate 
+              // 3. Fssai license 
+              // 4. Udyam MSME certificate. 
+
+
+            }
   </>
 }
 
