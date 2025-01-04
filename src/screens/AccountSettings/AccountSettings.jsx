@@ -1,246 +1,272 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native"
-import { useNavigation } from "@react-navigation/native"
-
+import { useNavigation, useRoute } from "@react-navigation/native"
 
 export default function AccountSettings() {
   const navigation = useNavigation()
-  const [ sellerFormStatus, setSellerFormStatus ] = React.useState('not-submitted') // 'submitted', 'pending', 'not-submitted', 'rejected'
+  const route = useRoute()
+  const { mobile } = route.params || { mobile: "9600528513" } // Add fallback to avoid undefined
+  const [sellerFormStatus, setSellerFormStatus] = useState('not-submitted') // 'pending', 'verified', 'not-submitted', 'rejected'
+  const [showCommentsPopup, setShowCommentsPopup] = useState(false);
+  const [comments, setComments] = useState('');
 
-  useEffect(() => {
-      // api call to get status of seller form submission
-      // setSellerFormStatus(response.status)
-    }, [])
+  useEffect(async () => {
+    const response = await fetch('http://10.0.2.2:4000/get/user-type ', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ mobile }),
+    });
+    const responseJson = await response.json()
+    setSellerFormStatus(responseJson.seller_submission_status);
+    setComments(responseJson.comments);
+  }, []);
+
   return <>
     <View style={styles.accountSettingsHeader}>
 
-        <Image
-          style={styles.Left1}
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/x7ur30fzyi-2436%3A71?alt=media&token=6e35c7f0-68b7-4c4a-95f2-d201882dae65",
-          }}
-        />
-        <Text style={styles.AccountSettings}>Account Settings</Text>
+      <Image
+        style={styles.Left1}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/x7ur30fzyi-2436%3A71?alt=media&token=6e35c7f0-68b7-4c4a-95f2-d201882dae65",
+        }}
+      />
+      <Text style={styles.AccountSettings}>Account Settings</Text>
     </View>
 
-   {/* settingsList */}
+    {/* settingsList */}
 
     <View style={styles.OrdersContainer}>
-    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => navigation.navigate('Orders')}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A826?alt=media&token=8c7461ef-d8b2-416d-8d20-746a7011c5c6",
-            }}
-          />
-          <Text style={styles.settingText}>My Orders</Text>
-    </TouchableOpacity>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
-
-        <View style={styles.OrdersContainer1}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4m5glb0qmgw-2431%3A850?alt=media&token=5c1933e6-01dc-4edc-a532-71bb0769ad07",
-            }}
-          />
-          <Text style={styles.settingText}>My Address</Text>
+      <TouchableOpacity style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }} onPress={() => navigation.navigate('Orders')}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A826?alt=media&token=8c7461ef-d8b2-416d-8d20-746a7011c5c6",
+          }}
+        />
+        <Text style={styles.settingText}>My Orders</Text>
+      </TouchableOpacity>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
     </View>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainer1}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/dgx1ma9dhib-2431%3A855?alt=media&token=bfc0774a-794a-44e1-82e5-f51b22ade4f9",
-            }}
-          />
-          <Text style={styles.settingText}>Profile</Text>
+    <View style={styles.OrdersContainer1}>
+      <View style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4m5glb0qmgw-2431%3A850?alt=media&token=5c1933e6-01dc-4edc-a532-71bb0769ad07",
+          }}
+        />
+        <Text style={styles.settingText}>My Address</Text>
+      </View>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
     </View>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainer1}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/wbm2e4cnpv-2431%3A841?alt=media&token=ec14a1c1-51d6-4af8-9285-8d3314f90082",
-            }}
-          />
-          <Text style={styles.settingText}>About us</Text>
+    <View style={styles.OrdersContainer1}>
+      <View style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/dgx1ma9dhib-2431%3A855?alt=media&token=bfc0774a-794a-44e1-82e5-f51b22ade4f9",
+          }}
+        />
+        <Text style={styles.settingText}>Profile</Text>
+      </View>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
     </View>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainer1}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/ysckb22e04e-2431%3A835?alt=media&token=74724413-483c-4c98-afc3-b3b3b2f0be2e",
-            }}
-          />
-          <Text style={styles.settingText}>New Products</Text>
+    <View style={styles.OrdersContainer1}>
+      <View style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/wbm2e4cnpv-2431%3A841?alt=media&token=ec14a1c1-51d6-4af8-9285-8d3314f90082",
+          }}
+        />
+        <Text style={styles.settingText}>About us</Text>
+      </View>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
     </View>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainer1}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/geznl6h4736-2431%3A830?alt=media&token=df274859-34d4-4cf7-8ea5-be297c57edb9",
-            }}
-          />
-          <Text style={styles.settingText}>Notifications</Text>
+    <View style={styles.OrdersContainer1}>
+      <View style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/ysckb22e04e-2431%3A835?alt=media&token=74724413-483c-4c98-afc3-b3b3b2f0be2e",
+          }}
+        />
+        <Text style={styles.settingText}>New Products</Text>
+      </View>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
     </View>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainerDelivery}>
-    <View style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/io244rl3hve-2453%3A841?alt=media&token=94601881-57ca-4bfc-8523-494be9261a3e",
-            }}
-          />
-          <Text style={styles.settingText}>Become a delivery partner</Text>
+    <View style={styles.OrdersContainer1}>
+      <View style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/geznl6h4736-2431%3A830?alt=media&token=df274859-34d4-4cf7-8ea5-be297c57edb9",
+          }}
+        />
+        <Text style={styles.settingText}>Notifications</Text>
+      </View>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
     </View>
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.OrdersContainerSeller}>
-    {
-      sellerFormStatus === 'not-submitted' ?
-      <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => navigation.navigate("SellerEntry")}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
-            }}
-          />
-          <Text style={styles.settingText}>Become a seller</Text>
-    </TouchableOpacity> :
-    sellerFormStatus === 'pending' ?
-    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
-            }}
-          />
-          <Text style={styles.settingText}>Under progress</Text>
-    </TouchableOpacity> :
-    sellerFormStatus === 'submitted' ?
-    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
-            }}
-          />
-          <Text style={styles.settingText}>You're already a seller</Text>
-    </TouchableOpacity>: 
-    sellerFormStatus === 'rejected' ?
-    <TouchableOpacity style={{display:"flex",alignItems:"center",gap:16,flexDirection:"row"}} onPress={() => {
-      // show a popup
-      // reasons
-      // 1. Invalid GST number
-      // 2. Invalid Pan number
-      // Buttons - 1. Close, 2. Resubmit
-    }}>
-    <Image
-            style={styles.settingIcon}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
-            }}
-          />
-          <Text style={styles.settingText}>Rejected. Click here to view details</Text>
-    </TouchableOpacity> : null
-    }
-          <Image
-            style={styles.ChevronRight}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
-            }}
-          />
-        </View>
-        <View style={styles.Rectangle4428} />
+    <View style={styles.OrdersContainerDelivery}>
+      <View style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+        <Image
+          style={styles.settingIcon}
+          source={{
+            uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/io244rl3hve-2453%3A841?alt=media&token=94601881-57ca-4bfc-8523-494be9261a3e",
+          }}
+        />
+        <Text style={styles.settingText}>Become a delivery partner</Text>
+      </View>
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
+    </View>
+    <View style={styles.Rectangle4428} />
 
-        <View style={styles.UserDetailContainer}>
-        <TouchableOpacity style={styles.loginButton}>
+    <View style={styles.OrdersContainerSeller}>
+      {
+        sellerFormStatus === 'not-submitted' ?
+          <TouchableOpacity style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }} onPress={() => navigation.navigate("SellerEntry", { resubmit: false, mobile })}>
+            <Image
+              style={styles.settingIcon}
+              source={{
+                uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+              }}
+            />
+            <Text style={styles.settingText}>Become a seller</Text>
+          </TouchableOpacity> :
+          sellerFormStatus === 'pending' ?
+            <TouchableOpacity style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+              <Image
+                style={styles.settingIcon}
+                source={{
+                  uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+                }}
+              />
+              <Text style={styles.settingText}>Please wait while we verify your details</Text>
+            </TouchableOpacity> :
+            sellerFormStatus === 'verified' ?
+              <TouchableOpacity style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }}>
+                <Image
+                  style={styles.settingIcon}
+                  source={{
+                    uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+                  }}
+                />
+                <Text style={styles.settingText}>You're already a seller</Text>
+              </TouchableOpacity> :
+              sellerFormStatus === 'rejected' ?
+                <TouchableOpacity style={{ display: "flex", alignItems: "center", gap: 16, flexDirection: "row" }} onPress={() => {setShowCommentsPopup(true);}}>
+                  <Image
+                    style={styles.settingIcon}
+                    source={{
+                      uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/4wnhdcc5k2k-2453%3A834?alt=media&token=6ce642eb-64b3-4afd-a2eb-0186e2eb07ee",
+                    }}
+                  />
+                  <Text style={styles.settingText}>Rejected. Click here to view details</Text>
+                </TouchableOpacity> : null
+      }
+      <Image
+        style={styles.ChevronRight}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/btk8ip08a1k-2431%3A824?alt=media&token=2a79b883-3106-41e9-9a2a-cc87ff9b9dfc",
+        }}
+      />
+    </View>
+    <View style={styles.Rectangle4428} />
+
+    <View style={styles.UserDetailContainer}>
+      <TouchableOpacity style={styles.loginButton}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
-        <Image
+      <Image
         style={styles.logo}
         source={{
           uri: "https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/ora2mibtar-2431%3A1011?alt=media&token=7b681939-a392-47c3-8d80-12c1ebe9658e",
         }}
       />
-        <Text style={styles.companyName}>YummyMart</Text>
-        <Text style={styles.appVersion}>V1.0.1</Text>
+      <Text style={styles.companyName}>YummyMart</Text>
+      <Text style={styles.appVersion}>V1.0.1</Text>
     </View>
+    {
+      showCommentsPopup ?
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ width: 300, height: 200, backgroundColor: '#fff', borderRadius: 6, padding: 20 }}>
+            <Text>Reasons for rejection:</Text>
+            <Text>{comments}</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
+              <TouchableOpacity style={styles.loginButton} onPress={() => setShowCommentsPopup(false)}>
+                <Text style={styles.buttonText}>Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.loginButton} onPress={() => {
+                setShowCommentsPopup(false);
+                navigation.navigate("SellerEntry", { resubmit: true, mobile });
+              }}>
+                <Text style={styles.buttonText}>Resubmit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View> : null
+    }
   </>
 }
 
 const styles = StyleSheet.create({
-    accountSettingsHeader: {
+  accountSettingsHeader: {
     width: 251,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems:"center",
-    paddingTop:20,
-    paddingLeft:20,
+    alignItems: "center",
+    paddingTop: 20,
+    paddingLeft: 20,
   },
 
   Left1: {
@@ -256,8 +282,8 @@ const styles = StyleSheet.create({
   OrdersContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent:"space-between",
-    alignItems:"center",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
     height: 50,
     paddingLeft: 20,
@@ -268,8 +294,8 @@ const styles = StyleSheet.create({
   OrdersContainer1: {
     display: "flex",
     flexDirection: "row",
-    justifyContent:"space-between",
-    alignItems:"center",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
     height: 50,
     paddingLeft: 20,
@@ -280,8 +306,8 @@ const styles = StyleSheet.create({
   OrdersContainerDelivery: {
     display: "flex",
     flexDirection: "row",
-    justifyContent:"space-between",
-    alignItems:"center",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
     height: 60,
     paddingLeft: 20,
@@ -293,8 +319,8 @@ const styles = StyleSheet.create({
   OrdersContainerSeller: {
     display: "flex",
     flexDirection: "row",
-    justifyContent:"space-between",
-    alignItems:"center",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
     height: 60,
     paddingLeft: 20,
@@ -308,7 +334,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 14,
     fontWeight: 500,
-    marginTop:6,
+    marginTop: 6,
   },
   ChevronRight: {
     width: 21.42,
@@ -317,11 +343,11 @@ const styles = StyleSheet.create({
   settingIcon: {
     width: 16,
     height: 16,
-    objectFit:"contain"
+    objectFit: "contain"
   },
   Rectangle4428: {
     width: 350,
-    height:1.11,
+    height: 1.11,
     borderRadius: 6,
     backgroundColor: "#D0CFCF",
     marginLeft: 'auto',
@@ -332,7 +358,7 @@ const styles = StyleSheet.create({
     borderColor: "#FF7300",
     borderWidth: 1,
     width: 93,
-height : 31,
+    height: 31,
     borderRadius: 6,
     alignItems: 'center', // To center the text
     justifyContent: 'center', // To center the text
@@ -352,21 +378,21 @@ height : 31,
     fontSize: 13,
     lineHeight: 13,
     fontWeight: 600,
-    textAlign:'center'
+    textAlign: 'center'
   },
   appVersion: {
     color: "rgba(0,0,0,1)",
     fontSize: 6,
     lineHeight: 6,
     fontWeight: 500,
-     textAlign:'center'
+    textAlign: 'center'
   },
-  UserDetailContainer:{
-    display:'flex',
-    flexDirection:'column',
-alignItems:'center',
-justifyContent:'center',
-gap:6,
-marginTop: 60,
-}
+  UserDetailContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    marginTop: 60,
+  }
 })
