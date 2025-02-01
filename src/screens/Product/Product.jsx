@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 10, 
+    paddingBottom: 10,
   },
   productHeader: {
     display: 'flex',

@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from "react-native"
+import {
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import { CheckBox } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -27,15 +34,15 @@ export default function Onboarding() {
       setShowAlert(false);
       setAlertMessage('');
     }, 3000);
-  }
+  };
 
   const handleUserDetailChange = (key, value) => {
     setUserDetail({ ...userDetail, [key]: value });
     setEnableSubmit(userDetail.name && userDetail.email);
-  }
+  };
 
   const handleCompleteOnboard = async () => {
-    console.log({ mobile, ...userDetail })
+    console.log({ mobile, ...userDetail });
     const submitRes = await fetch('http://10.0.2.2:4000/user/onboarding', {
       method: 'POST',
       headers: {
@@ -48,13 +55,15 @@ export default function Onboarding() {
     } else {
       handleAlert('Failed to submit details. Please try again');
     }
-  }
+  };
 
   return (
     <>
-      {showAlert && <View style={styles.alertContainer}>
-        <Text style={styles.alertText}>{alertMessage}</Text>
-      </View>}
+      {showAlert && (
+        <View style={styles.alertContainer}>
+          <Text style={styles.alertText}>{alertMessage}</Text>
+        </View>
+      )}
       <View style={styles.Onboarding}>
         <View style={styles.welcomeContainer}>
           <YummyMart />
@@ -62,12 +71,14 @@ export default function Onboarding() {
         </View>
 
         <View style={styles.container}>
-
           <View>
-            <Text style={styles.headingText}>Please fill these
-              details to proceed
-              further</Text>
-            <Text style={styles.description}>Nutella® is famous for its authentic taste of hazelnuts and cocoa, made even more irresistible by its unique creaminess.</Text>
+            <Text style={styles.headingText}>
+              Please fill these details to proceed further
+            </Text>
+            <Text style={styles.description}>
+              Nutella® is famous for its authentic taste of hazelnuts and cocoa,
+              made even more irresistible by its unique creaminess.
+            </Text>
             <TextInput
               placeholder="Enter your name"
               style={styles.input1}
@@ -94,29 +105,47 @@ export default function Onboarding() {
             <CheckBox
               title="Get regular updates via Whatsapp"
               checked={userDetail.receiveWhatsapp}
-              onPress={() => handleUserDetailChange('receiveWhatsapp', !userDetail.receiveWhatsapp)}
+              onPress={() =>
+                handleUserDetailChange(
+                  'receiveWhatsapp',
+                  !userDetail.receiveWhatsapp,
+                )
+              }
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderWidth: 0,
                 marginVertical: 0,
                 padding: 0,
-                marginTop: 20
+                marginTop: 20,
               }}
               textStyle={{
                 margin: 0,
                 padding: 0,
-              }} checkedIcon={
-                <Icon name="check-box" type="MaterialIcons" size={24} color="#0855AE" />
+              }}
+              checkedIcon={
+                <Icon
+                  name="check-box"
+                  type="MaterialIcons"
+                  size={24}
+                  color="#0855AE"
+                />
               }
               uncheckedIcon={
-                <Icon name="check-box-outline-blank" type="MaterialIcons" size={24} color="gray" />
+                <Icon
+                  name="check-box-outline-blank"
+                  type="MaterialIcons"
+                  size={24}
+                  color="gray"
+                />
               }
             />
 
             <CheckBox
               title="Get regular updates via SMS"
               checked={userDetail.receiveSMS}
-              onPress={() => handleUserDetailChange('receiveSMS', !userDetail.receiveSMS)}
+              onPress={() =>
+                handleUserDetailChange('receiveSMS', !userDetail.receiveSMS)
+              }
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderWidth: 0,
@@ -126,18 +155,31 @@ export default function Onboarding() {
               textStyle={{
                 margin: 0,
                 padding: 0,
-              }} checkedIcon={
-                <Icon name="check-box" type="MaterialIcons" size={24} color="#0855AE" />
+              }}
+              checkedIcon={
+                <Icon
+                  name="check-box"
+                  type="MaterialIcons"
+                  size={24}
+                  color="#0855AE"
+                />
               }
               uncheckedIcon={
-                <Icon name="check-box-outline-blank" type="MaterialIcons" size={24} color="gray" />
+                <Icon
+                  name="check-box-outline-blank"
+                  type="MaterialIcons"
+                  size={24}
+                  color="gray"
+                />
               }
             />
 
             <CheckBox
               title="Get regular updates via Email"
               checked={userDetail.receiveEmail}
-              onPress={() => handleUserDetailChange('receiveEmail', !userDetail.receiveEmail)}
+              onPress={() =>
+                handleUserDetailChange('receiveEmail', !userDetail.receiveEmail)
+              }
               containerStyle={{
                 backgroundColor: 'transparent',
                 borderWidth: 0,
@@ -147,11 +189,22 @@ export default function Onboarding() {
               textStyle={{
                 margin: 0,
                 padding: 0,
-              }} checkedIcon={
-                <Icon name="check-box" type="MaterialIcons" size={24} color="#0855AE" />
+              }}
+              checkedIcon={
+                <Icon
+                  name="check-box"
+                  type="MaterialIcons"
+                  size={24}
+                  color="#0855AE"
+                />
               }
               uncheckedIcon={
-                <Icon name="check-box-outline-blank" type="MaterialIcons" size={24} color="gray" />
+                <Icon
+                  name="check-box-outline-blank"
+                  type="MaterialIcons"
+                  size={24}
+                  color="gray"
+                />
               }
             />
 
@@ -159,7 +212,8 @@ export default function Onboarding() {
               <TouchableOpacity
                 style={[
                   styles.loginButton,
-                  (userDetail.name.length === 0 || userDetail.email.length === 0) && {
+                  (userDetail.name.length === 0 ||
+                    userDetail.email.length === 0) && {
                     backgroundColor: 'rgba(255, 115, 0, 0.5)',
                     borderColor: 'rgba(255, 115, 0, 0.5)',
                   },
@@ -169,56 +223,53 @@ export default function Onboarding() {
               >
                 <Text style={styles.buttonText}>Complete Onboard</Text>
               </TouchableOpacity>
-
             </View>
           </View>
-
         </View>
-
       </View>
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   Onboarding: {
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    width: "100%",
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    width: '100%',
     height: 844,
     borderRadius: 24,
-    boxSizing: "border-box",
-    backgroundColor: "rgba(255,255,255,1)",
-    padding: 20
+    boxSizing: 'border-box',
+    backgroundColor: 'rgba(255,255,255,1)',
+    padding: 20,
   },
   welcomeContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    boxSizing: "border-box",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    boxSizing: 'border-box',
     gap: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   logo: {
     width: 30,
-    height: "100%",
+    height: '100%',
   },
   WelcomeToYummymart: {
-    color: "rgba(112,112,112,1)",
+    color: 'rgba(112,112,112,1)',
     fontSize: 16,
     lineHeight: 16,
-    fontFamily: "DM Sans, sans-serif",
+    fontFamily: 'DM Sans, sans-serif',
     fontWeight: 400,
   },
   container: {
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'start',
-    marginTop: 60
+    marginTop: 60,
   },
   headingText: {
     fontSize: 40,
@@ -230,7 +281,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'regular',
     color: '#979899',
-    marginTop: 8
+    marginTop: 8,
   },
   input1: {
     width: '100%',
@@ -259,8 +310,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   loginButton: {
-    backgroundColor: "#FF7300",
-    borderColor: "#FF7300",
+    backgroundColor: '#FF7300',
+    borderColor: '#FF7300',
     borderWidth: 1,
     width: '100%',
     paddingTop: 16,
@@ -277,4 +328,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold', // Optional, for a bold text
   },
-})
+});

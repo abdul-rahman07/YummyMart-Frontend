@@ -3,7 +3,6 @@ import { View, Image, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 const ProductPage = () => {
-
   const images = [
     { id: '1', source: require('../../../assets/productImage.png') },
     { id: '2', source: require('../../../assets/productImage.png') },
@@ -27,7 +26,6 @@ const ProductPage = () => {
           </View>
         ))}
       </Swiper>
-
     </View>
   );
 };
@@ -40,24 +38,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slide: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
   image: {
-    width: "90%",
+    width: '90%',
     height: 400,
-    resizeMode: "cover",
-	marginTop : 8,
-	borderRadius: 5,
+    resizeMode: 'cover',
+    marginTop: 8,
+    borderRadius: 5,
   },
   paginationWrapper: {
-    backgroundColor: '#FFFFFF', 
-    padding: 10,              
-    borderRadius: 10,         
-    bottom: 10,  
-    width : 90,             
+    backgroundColor: '#FFFFFF',
+    padding: 10,
+    borderRadius: 10,
+    bottom: 10,
+    width: 90,
     position: 'absolute',
     left: '50%',
     transform: [{ translateX: -45 }], // Center by adjusting half of the width

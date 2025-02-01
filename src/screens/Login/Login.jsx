@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Pressable } from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Pressable,
+} from 'react-native';
 import Verify from '../../../assets/verify.svg'; // Adjust the path based on your folder structure
 import YummyMart from '../../../assets/YummyMart.svg';
 import { useNavigation } from '@react-navigation/native';
-
 
 const Login = () => {
   const navigation = useNavigation();
@@ -20,7 +26,7 @@ const Login = () => {
       setShowAlert(false);
       setAlertMessage('');
     }, 3000);
-  }
+  };
 
   const sendOTP = async () => {
     if (!mobile) {
@@ -36,7 +42,7 @@ const Login = () => {
         },
         body: JSON.stringify({ mobile }),
       });
-    
+
       if (sendOTPRes.ok) {
         handleAlert('OTP sent successfully');
         setOtpEnabled(true);
@@ -49,14 +55,14 @@ const Login = () => {
       console.error('Error sending OTP:', error);
       handleAlert('An error occurred while sending OTP');
     }
-  };  
+  };
 
   const handleLogin = async () => {
     if (!mobile || !otp) {
       handleAlert('Please enter all fields');
       return;
     }
-    try{
+    try {
       const verifyOTPRes = await fetch('http://10.0.2.2:4000/verify/otp', {
         method: 'POST',
         headers: {
@@ -71,91 +77,107 @@ const Login = () => {
       } else if (verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
         navigation.navigate('HomeScreen', { mobile });
       }
-    }catch(err){
-      handleAlert('Error while login')
+    } catch (err) {
+      handleAlert('Error while login');
     }
   };
 
-  return <>
-    {showAlert && <View style={styles.alertContainer}>
-      <Text style={styles.alertText}>{alertMessage}</Text>
-    </View>}
-    <View style={styles.welcomeContainer}>
-      <YummyMart />
-      <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
-    </View>
-
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.headingText}>Login to Your account</Text>
-        <Text style={styles.description}>Nutella® is famous for its authentic taste of hazelnuts and cocoa, made even more irresistible by its unique creaminess.</Text>
-        <View style={{ position: 'relative' }}>
-          <TextInput
-            placeholder="Enter Mobile Number"
-            style={styles.input1}
-            keyboardType="numeric"
-            value={mobile}
-            onChangeText={setMobile}
-            placeholderTextColor="#979899"
-            accessible
-            accessibilityLabel="Mobile number input field"
-          />
-          {mobile.length === 10 && !isOtpEnabled ? (
-       
-             <Text style={styles.send} onPress={sendOTP}>send</Text>
-        
-          ) : mobile.length === 10 && isOtpEnabled  ? (
-            <TouchableOpacity  style={styles.verifyIcon}><Verify /></TouchableOpacity>
-          ) : (
-            null
-          )}
+  return (
+    <>
+      {showAlert && (
+        <View style={styles.alertContainer}>
+          <Text style={styles.alertText}>{alertMessage}</Text>
         </View>
-        <TextInput
-          placeholder="Enter OTP"
-          style={[styles.input2, !isOtpEnabled && { backgroundColor: '#rgba(249, 249, 249, 1)' }]}
-          keyboardType="numeric"
-          value={otp}
-          onChangeText={setOtp}
-          placeholderTextColor="#979899"
-          editable={isOtpEnabled}
-          accessible
-          accessibilityLabel="Otp input field"
-        />
-        <TouchableOpacity
-          style={[styles.loginButton, otp.length < 4 && { backgroundColor: 'rgba(255, 115, 0, 0.5)', borderColor: 'rgba(255, 115, 0, 0.5)' }]}
-          onPress={handleLogin}
-          disabled={otp.length < 4}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-
+      )}
+      <View style={styles.welcomeContainer}>
+        <YummyMart />
+        <Text style={styles.WelcomeToYummymart}>Welcome to YummyMart</Text>
       </View>
 
-      <View style={styles.bottomTextContainer}>
-        <Text style={styles.policyText}>By clicking on “Login” you are agreeing to our <Text style={styles.linkText}>terms of use</Text> </Text>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.headingText}>Login to Your account</Text>
+          <Text style={styles.description}>
+            Nutella® is famous for its authentic taste of hazelnuts and cocoa,
+            made even more irresistible by its unique creaminess.
+          </Text>
+          <View style={{ position: 'relative' }}>
+            <TextInput
+              placeholder="Enter Mobile Number"
+              style={styles.input1}
+              keyboardType="numeric"
+              value={mobile}
+              onChangeText={setMobile}
+              placeholderTextColor="#979899"
+              accessible
+              accessibilityLabel="Mobile number input field"
+            />
+            {mobile.length === 10 && !isOtpEnabled ? (
+              <Text style={styles.send} onPress={sendOTP}>
+                send
+              </Text>
+            ) : mobile.length === 10 && isOtpEnabled ? (
+              <TouchableOpacity style={styles.verifyIcon}>
+                <Verify />
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          <TextInput
+            placeholder="Enter OTP"
+            style={[
+              styles.input2,
+              !isOtpEnabled && { backgroundColor: '#rgba(249, 249, 249, 1)' },
+            ]}
+            keyboardType="numeric"
+            value={otp}
+            onChangeText={setOtp}
+            placeholderTextColor="#979899"
+            editable={isOtpEnabled}
+            accessible
+            accessibilityLabel="Otp input field"
+          />
+          <TouchableOpacity
+            style={[
+              styles.loginButton,
+              otp.length < 4 && {
+                backgroundColor: 'rgba(255, 115, 0, 0.5)',
+                borderColor: 'rgba(255, 115, 0, 0.5)',
+              },
+            ]}
+            onPress={handleLogin}
+            disabled={otp.length < 4}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </View>
 
+        <View style={styles.bottomTextContainer}>
+          <Text style={styles.policyText}>
+            By clicking on “Login” you are agreeing to our{' '}
+            <Text style={styles.linkText}>terms of use</Text>{' '}
+          </Text>
+        </View>
       </View>
-
-    </View>
-  </>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
   welcomeContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    boxSizing: "border-box",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    boxSizing: 'border-box',
     gap: 20,
     paddingTop: 30,
-    paddingLeft: 20
+    paddingLeft: 20,
   },
   WelcomeToYummymart: {
-    color: "rgba(112,112,112,1)",
+    color: 'rgba(112,112,112,1)',
     fontSize: 16,
     lineHeight: 16,
-    fontFamily: "DM Sans, sans-serif",
+    fontFamily: 'DM Sans, sans-serif',
     fontWeight: 400,
   },
   container: {
@@ -164,7 +186,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'start',
     backgroundColor: '#f5f5f5',
-    marginTop: 60
+    marginTop: 60,
   },
   headingText: {
     fontSize: 40,
@@ -176,7 +198,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'regular',
     color: '#979899',
-    marginTop: 8
+    marginTop: 8,
   },
   input1: {
     width: '100%',
@@ -205,8 +227,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   loginButton: {
-    backgroundColor: "#FF7300",
-    borderColor: "#FF7300",
+    backgroundColor: '#FF7300',
+    borderColor: '#FF7300',
     borderWidth: 1,
     width: '100%',
     paddingTop: 16,
@@ -219,8 +241,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   sendOTPButton: {
-    backgroundColor: "#FF7300",
-    borderColor: "#FF7300",
+    backgroundColor: '#FF7300',
+    borderColor: '#FF7300',
     borderWidth: 1,
     width: '30%',
     paddingTop: 16,
@@ -240,7 +262,7 @@ const styles = StyleSheet.create({
   policyText: {
     color: '#A9A9AA',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   linkText: {
     color: 'black',
@@ -262,14 +284,14 @@ const styles = StyleSheet.create({
   verifyIcon: {
     position: 'absolute',
     top: 39,
-    right: 20
+    right: 20,
   },
   send: {
     position: 'absolute',
     top: 40,
     left: 300,
-    color:"#0856AF",
-  }
+    color: '#0856AF',
+  },
 });
 
 export default Login;
