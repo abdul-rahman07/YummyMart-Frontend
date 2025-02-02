@@ -2,12 +2,41 @@ import React from 'react';
 import { StyleSheet, Image, Text, View, ImageBackground } from 'react-native';
 import Star from '../../../assets/stars.svg';
 
-export default function TestimonialContainer() {
+export default function TestimonialContainer({reviews}) {
+  const timeAgo = (date) => {
+    const now = new Date();
+    const past = new Date(date);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    const intervals = {
+        year: 31536000,  // 60 * 60 * 24 * 365
+        month: 2592000,  // 60 * 60 * 24 * 30
+        week: 604800,    // 60 * 60 * 24 * 7
+        day: 86400,      // 60 * 60 * 24
+        hour: 3600,      // 60 * 60
+        minute: 60,
+        second: 1,
+    };
+
+    for (let key in intervals) {
+        const interval = Math.floor(diffInSeconds / intervals[key]);
+        if (interval > 0) {
+            return `${interval} ${key}${interval !== 1 ? 's' : ''} ago`;
+        }
+    }
+    return "Just now";
+};
+
   return (
-    <View style={styles.testimonialContainer}>
+    reviews?.map((review, index) => (
+      <View style={styles.testimonialContainer}>
       <View style={styles.headerContainer}>
-        <Text style={styles.reviwer}>Athil</Text>
-        <Text style={styles.timeline}>4 Months ago</Text>
+        <Text style={styles.reviwer}>{review.user}</Text>
+        <Text style={styles.timeline}>
+          {
+            timeAgo(review.date)
+          }
+        </Text>
       </View>
 
       <View style={styles.testimonialDetailSection}>
@@ -18,14 +47,12 @@ export default function TestimonialContainer() {
           <View style={styles.productReviewImage} />
         </View>
         <Text style={styles.ProductDescription}>
-          Nutella® is famous for its authentic taste of hazelnuts and cocoa,
-          made even more irresistible by its unique creaminess. Nutella® is
-          famous for its authentic taste of hazelnuts and cocoa, made even more
-          irresistible by its unique creaminess.
+          {review.comments}
         </Text>
         <Text style={styles.readMoreLink}>Read more...</Text>
       </View>
     </View>
+    ))
   );
 }
 

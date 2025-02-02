@@ -15,7 +15,19 @@ import Star2 from '../../../assets/star2';
 import Star1 from '../../../assets/star1';
 import ProductReviews from './ProductReviews';
 
-const ProductRating = () => {
+const ProductRating = ({product}) => {
+  let fiveStar = product.reviews.filter((review) => review.rating === 5);
+  let fourStar = product.reviews.filter((review) => review.rating === 4);
+  let threeStar = product.reviews.filter((review) => review.rating === 3);
+  let twoStar = product.reviews.filter((review) => review.rating === 2);
+  let oneStar = product.reviews.filter((review) => review.rating === 1);
+
+  let fiveStarPercentage = (fiveStar.length / product.reviews.length) * 100;
+  let fourStarPercentage = (fourStar.length / product.reviews.length) * 100;
+  let threeStarPercentage = (threeStar.length / product.reviews.length) * 100;
+  let twoStarPercentage = (twoStar.length / product.reviews.length) * 100;
+  let oneStarPercentage = (oneStar.length / product.reviews.length) * 100;
+
   return (
     <>
       <Text style={styles.headerText}>Product Rating & reviews</Text>
@@ -37,10 +49,10 @@ const ProductRating = () => {
                 <Text style={styles.ratingText}>5</Text>
                 <Star5 />
               </View>
-              <Text style={styles.ratingPercentage}>86%</Text>
+              <Text style={styles.ratingPercentage}>{fiveStarPercentage}%</Text>
             </View>
             <View style={styles.parentRatingBar}>
-              <View style={[styles.childRatingBar, { width: '86%' }]}></View>
+              <View style={[styles.childRatingBar, { width: `${fiveStarPercentage}%` }]}></View>
             </View>
           </View>
 
@@ -52,10 +64,10 @@ const ProductRating = () => {
                 <Text style={styles.ratingText}>4</Text>
                 <Star4 />
               </View>
-              <Text style={styles.ratingPercentage}>70%</Text>
+              <Text style={styles.ratingPercentage}>{fourStarPercentage}%</Text>
             </View>
             <View style={styles.parentRatingBar}>
-              <View style={[styles.childRatingBar, { width: '70%' }]}></View>
+              <View style={[styles.childRatingBar, { width: `${fourStarPercentage}%` }]}></View>
             </View>
           </View>
 
@@ -67,10 +79,10 @@ const ProductRating = () => {
                 <Text style={styles.ratingText}>3</Text>
                 <Star3 />
               </View>
-              <Text style={styles.ratingPercentage}>40%</Text>
+              <Text style={styles.ratingPercentage}>{threeStarPercentage}%</Text>
             </View>
             <View style={styles.parentRatingBar}>
-              <View style={[styles.childRatingBar, { width: '40%' }]}></View>
+              <View style={[styles.childRatingBar, { width: `${threeStarPercentage}%` }]}></View>
             </View>
           </View>
 
@@ -82,7 +94,7 @@ const ProductRating = () => {
                 <Text style={styles.ratingText}>2</Text>
                 <Star2 />
               </View>
-              <Text style={styles.ratingPercentage}>25%</Text>
+              <Text style={styles.ratingPercentage}>{twoStarPercentage}%</Text>
             </View>
             <View style={styles.parentRatingBar}>
               <View style={[styles.childRatingBar, { width: '25%' }]}></View>
@@ -97,10 +109,10 @@ const ProductRating = () => {
                 <Text style={styles.ratingText}>1</Text>
                 <Star1 />
               </View>
-              <Text style={styles.ratingPercentage}>08%</Text>
+              <Text style={styles.ratingPercentage}>{oneStarPercentage}%</Text>
             </View>
             <View style={styles.parentRatingBar}>
-              <View style={[styles.childRatingBar, { width: '08%' }]}></View>
+              <View style={[styles.childRatingBar, { width: `${oneStarPercentage}%` }]}></View>
             </View>
           </View>
         </View>

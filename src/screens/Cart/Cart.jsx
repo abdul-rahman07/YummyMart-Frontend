@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -19,6 +19,28 @@ import Xicon from '../../../assets/Xicon.svg';
 
 export default function Cart() {
   const navigation = useNavigation();
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const response = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          mobile,
+          path: '/get/cart',
+        })
+      });
+      const { body } = await response.json();
+      if (body) {
+        setCartItems(body);
+      }
+    }
+    fetchCartItems();
+  }, []
+  );
   return (
     <>
       <View style={styles.accountSettingsHeader}>
@@ -41,7 +63,7 @@ export default function Cart() {
               }}
             />
           </TouchableOpacity>
-          <Text style={styles.AccountSettings}>Your cart</Text>
+          <Text style={styles.AccountSettings}>My cart</Text>
         </View>
 
         <TouchableOpacity style={styles.wishlistBox}>
@@ -66,207 +88,76 @@ export default function Cart() {
 
       {/* cartItems */}
 
-      <View style={[styles.cartListBox, { marginTop: 14 }]}>
-        <View>
-          <Image
-            style={styles.CategoryImage}
-            source={{
-              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-            }}
-          />
-          <View style={styles.QuantityContainer}>
-            <View style={styles.QuantityTextContainer}>
-              <Text style={styles.QuantityText}>QTY : 1</Text>
+      {
+        cartItems?.map(item => {
+          let discount = Math.round((item.mrp - item.yummy_price) / item.mrp * 100)
+          return <View style={[styles.cartListBox, { marginTop: 14 }]}>
+            <View>
               <Image
-                style={styles.DownArrowWhite}
+                style={styles.CategoryImage}
                 source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/1o9hs4a6wfz-2541%3A258?alt=media&token=39706c75-ca50-46d0-ba9d-96df2fec4b5d',
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
                 }}
               />
+              <View style={styles.QuantityContainer}>
+                <View style={styles.QuantityTextContainer}>
+                  <Text style={styles.QuantityText}>QTY : {item.quantity}</Text>
+                  <Image
+                    style={styles.DownArrowWhite}
+                    source={{
+                      uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/1o9hs4a6wfz-2541%3A258?alt=media&token=39706c75-ca50-46d0-ba9d-96df2fec4b5d',
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.cartDetailsBox}>
+              <View style={styles.cartHeader}>
+                <Text style={styles.cartHeaderText}>{item.product.category.name}</Text>
+                <DeleteIcon width={12} height={12} style={styles.deleteIcon} />
+              </View>
+
+              <Text style={styles.productName}>
+                {item.product.name}
+              </Text>
+
+              <View style={styles.productPriceContainer}>
+                <RupeeIcon style={styles.RupeeIcon} />
+                <Text style={styles.price}>{item.product.yummy_price}</Text>
+                <View style={styles.MRPBox}>
+                  <Text style={styles.heading}>MRP</Text>
+                  <Image
+                    style={styles.CurrencyRupee}
+                    source={{
+                      uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/34gxxk286wr-2541%3A232?alt=media&token=b4547613-3b24-49fb-8b50-090b7fba058e',
+                    }}
+                  />
+                  <Text style={styles.mrpprice}>{item.product.mrp}</Text>
+                </View>
+                <View style={styles.offerBox}>
+                  <Text style={styles.offerText}>{discount}% OFF</Text>
+                </View>
+              </View>
+
+              <View style={styles.dealineContainer}>
+                <Text style={styles.detailtext}>Get it by</Text>
+                <Text style={styles.arrivaleTime}>Tomorrow</Text>
+              </View>
+              <View style={styles.warrantyBox}>
+                <Tick width={12} height={12} />
+                <Text style={styles.warrantyText}>1 year warranty</Text>
+              </View>
+              <View style={styles.RestrictionBox}>
+                <Xicon width={12} height={12} />
+                <Text style={styles.restrictionText}>
+                  This item cannot be exchanged or return
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-
-        <View style={styles.cartDetailsBox}>
-          <View style={styles.cartHeader}>
-            <Text style={styles.cartHeaderText}>Spicy</Text>
-            <DeleteIcon width={12} height={12} style={styles.deleteIcon} />
-          </View>
-
-          <Text style={styles.productName}>
-            Bell Pepper Nutella karmen lopu Karmen mon
-          </Text>
-
-          <View style={styles.productPriceContainer}>
-            <RupeeIcon style={styles.RupeeIcon} />
-            <Text style={styles.price}>420</Text>
-            <View style={styles.MRPBox}>
-              <Text style={styles.heading}>MRP</Text>
-              <Image
-                style={styles.CurrencyRupee}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/34gxxk286wr-2541%3A232?alt=media&token=b4547613-3b24-49fb-8b50-090b7fba058e',
-                }}
-              />
-              <Text style={styles.mrpprice}>500</Text>
-            </View>
-            <View style={styles.offerBox}>
-              <Text style={styles.offerText}>52% OFF</Text>
-            </View>
-          </View>
-
-          <View style={styles.dealineContainer}>
-            <Text style={styles.detailtext}>Get it by</Text>
-            <Text style={styles.arrivaleTime}>Tomorrow</Text>
-          </View>
-          <View style={styles.warrantyBox}>
-            <Tick width={12} height={12} />
-            <Text style={styles.warrantyText}>1 year warranty</Text>
-          </View>
-          <View style={styles.RestrictionBox}>
-            <Xicon width={12} height={12} />
-            <Text style={styles.restrictionText}>
-              This item cannot be exchanged or return
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {/* 2 */}
-
-      <View style={[styles.cartListBox, { marginTop: 14 }]}>
-        <View>
-          <Image
-            style={styles.CategoryImage}
-            source={{
-              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-            }}
-          />
-          <View style={styles.QuantityContainer}>
-            <View style={styles.QuantityTextContainer}>
-              <Text style={styles.QuantityText}>QTY : 1</Text>
-              <Image
-                style={styles.DownArrowWhite}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/1o9hs4a6wfz-2541%3A258?alt=media&token=39706c75-ca50-46d0-ba9d-96df2fec4b5d',
-                }}
-              />
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.cartDetailsBox}>
-          <View style={styles.cartHeader}>
-            <Text style={styles.cartHeaderText}>Spicy</Text>
-            <DeleteIcon width={12} height={12} style={styles.deleteIcon} />
-          </View>
-
-          <Text style={styles.productName}>
-            Bell Pepper Nutella karmen lopu Karmen mon
-          </Text>
-
-          <View style={styles.productPriceContainer}>
-            <RupeeIcon style={styles.RupeeIcon} />
-            <Text style={styles.price}>420</Text>
-            <View style={styles.MRPBox}>
-              <Text style={styles.heading}>MRP</Text>
-              <Image
-                style={styles.CurrencyRupee}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/34gxxk286wr-2541%3A232?alt=media&token=b4547613-3b24-49fb-8b50-090b7fba058e',
-                }}
-              />
-              <Text style={styles.mrpprice}>500</Text>
-            </View>
-            <View style={styles.offerBox}>
-              <Text style={styles.offerText}>52% OFF</Text>
-            </View>
-          </View>
-
-          <View style={styles.dealineContainer}>
-            <Text style={styles.detailtext}>Get it by</Text>
-            <Text style={styles.arrivaleTime}>Tomorrow</Text>
-          </View>
-          <View style={styles.warrantyBox}>
-            <Tick width={12} height={12} />
-            <Text style={styles.warrantyText}>1 year warranty</Text>
-          </View>
-          <View style={styles.RestrictionBox}>
-            <Xicon width={12} height={12} />
-            <Text style={styles.restrictionText}>
-              This item cannot be exchanged or return
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {/* 3 */}
-
-      <View style={[styles.cartListBox, { marginTop: 14 }]}>
-        <View>
-          <Image
-            style={styles.CategoryImage}
-            source={{
-              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-            }}
-          />
-          <View style={styles.QuantityContainer}>
-            <View style={styles.QuantityTextContainer}>
-              <Text style={styles.QuantityText}>QTY : 1</Text>
-              <Image
-                style={styles.DownArrowWhite}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/1o9hs4a6wfz-2541%3A258?alt=media&token=39706c75-ca50-46d0-ba9d-96df2fec4b5d',
-                }}
-              />
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.cartDetailsBox}>
-          <View style={styles.cartHeader}>
-            <Text style={styles.cartHeaderText}>Spicy</Text>
-            <DeleteIcon width={12} height={12} style={styles.deleteIcon} />
-          </View>
-
-          <Text style={styles.productName}>
-            Bell Pepper Nutella karmen lopu Karmen mon
-          </Text>
-
-          <View style={styles.productPriceContainer}>
-            <RupeeIcon style={styles.RupeeIcon} />
-            <Text style={styles.price}>420</Text>
-            <View style={styles.MRPBox}>
-              <Text style={styles.heading}>MRP</Text>
-              <Image
-                style={styles.CurrencyRupee}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/34gxxk286wr-2541%3A232?alt=media&token=b4547613-3b24-49fb-8b50-090b7fba058e',
-                }}
-              />
-              <Text style={styles.mrpprice}>500</Text>
-            </View>
-            <View style={styles.offerBox}>
-              <Text style={styles.offerText}>52% OFF</Text>
-            </View>
-          </View>
-
-          <View style={styles.dealineContainer}>
-            <Text style={styles.detailtext}>Get it by</Text>
-            <Text style={styles.arrivaleTime}>Tomorrow</Text>
-          </View>
-          <View style={styles.warrantyBox}>
-            <Tick width={12} height={12} />
-            <Text style={styles.warrantyText}>1 year warranty</Text>
-          </View>
-          <View style={styles.RestrictionBox}>
-            <Xicon width={12} height={12} />
-            <Text style={styles.restrictionText}>
-              This item cannot be exchanged or return
-            </Text>
-          </View>
-        </View>
-      </View>
+        })
+      }
     </>
   );
 }

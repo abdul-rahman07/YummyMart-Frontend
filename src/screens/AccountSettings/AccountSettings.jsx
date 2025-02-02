@@ -13,21 +13,21 @@ export default function AccountSettings() {
   useEffect(() => {
     const fetchUserType = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:4000/get/user-type', {
+        const response = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ mobile }),
+          body: JSON.stringify({ mobile, path: '/get/user-type' }),
         });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const responseJson = await response.json();
-        setSellerFormStatus(responseJson.seller_submission_status);
-        setComments(responseJson.comments);
+        const { body } = await response.json();
+        setSellerFormStatus(body.seller_submission_status);
+        setComments(body.comments);
       } catch (error) {
         console.error('Error fetching user type:', error);
       }

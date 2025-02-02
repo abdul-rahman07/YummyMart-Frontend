@@ -2,39 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function HomeCategories() {
-  const [categories, setCategories] = useState([]);
-
-  const fetchCategories = async () => {
-    try {
-      const categoriesList = await fetch(
-        'http://10.0.2.2:4000/get/categories',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      let categoriesListData = await categoriesList.json();
-      setCategories(categoriesListData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+export default function HomeCategories({categories, type}) {
 
   const navigation = useNavigation();
   return (
     <View style={styles.CategoriesContainer}>
       <View style={styles.CategoriesHeader}>
-        <Text style={styles.headerText}>Shop by Categories</Text>
+        <Text style={styles.headerText}>Shop by {type === 'category' ? 'Categories' : 'Stores'}</Text>
         <TouchableOpacity
           style={styles.ViewAll}
-          onPress={() => navigation.navigate('Categories')}>
+          onPress={() => {
+            if (type === 'category') {
+              navigation.navigate('Categories');
+            } else {
+              navigation.navigate('Stores');
+            }
+          }}>
         
           <Text style={styles.buttonText}>View All</Text>
         </TouchableOpacity>

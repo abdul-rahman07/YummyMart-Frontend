@@ -11,15 +11,17 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import RupeeIcon from '../../../assets/RupeeIcon.svg';
 
-const ProductBottomBar = () => {
+const ProductBottomBar = ({ product }) => {
   const navigation = useNavigation();
+  let discount = Math.round(((product.mrp - product.yummy_price) / product.mrp) * 100);
+
   return (
     <>
       <View style={styles.bottomBarContainer}>
         <View style={styles.priceDetailContainer}>
           <View style={styles.productPriceContainer}>
             <RupeeIcon style={styles.RupeeIcon} />
-            <Text style={styles.price}>420</Text>
+            <Text style={styles.price}>{product.yummy_price}</Text>
             <View style={styles.MRPBox}>
               <Text style={styles.heading}>MRP</Text>
               <Image
@@ -28,22 +30,32 @@ const ProductBottomBar = () => {
                   uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/34gxxk286wr-2541%3A232?alt=media&token=b4547613-3b24-49fb-8b50-090b7fba058e',
                 }}
               />
-              <Text style={styles.mrpprice}>500</Text>
+              <Text style={styles.mrpprice}>{product.mrp}</Text>
             </View>
             <View style={styles.offerBox}>
-              <Text style={styles.offerText}>52% OFF</Text>
+              <Text style={styles.offerText}>{discount}% OFF</Text>
             </View>
           </View>
         </View>
 
-        <View style={styles.bottomButtonsContainer}>
-          <TouchableOpacity style={styles.cartButton}>
-            <Text style={styles.buttonText}>Add to cart</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buyButton}>
-            <Text style={styles.buttonText}>Buy now</Text>
-          </TouchableOpacity>
-        </View>
+        {
+          product.stock === 'in-stock' ? (
+            <View style={styles.bottomButtonsContainer}>
+              <TouchableOpacity style={styles.cartButton}>
+                <Text style={styles.buttonText}>Add to cart</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.buyButton}>
+                <Text style={styles.buttonText}>Buy now</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.bottomButtonsContainer}>
+              <TouchableOpacity style={styles.cartButton}>
+                <Text style={styles.buttonText}>Product Unavailable</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        }
       </View>
     </>
   );

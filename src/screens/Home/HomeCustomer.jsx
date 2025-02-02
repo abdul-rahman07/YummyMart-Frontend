@@ -22,31 +22,62 @@ export default function HomeCustomer() {
     location: '',
   });
   const [loading, setLoading] = useState(true);
-  console.log(userDetails);
+  const [categories, setCategories] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [dailyDeals, setDailyDeals] = useState([]);
 
   const fetchUserDetails = async () => {
-    const userDetailsRes = await fetch('http://10.0.2.2:4000/get/user', {
+    const userDetailsRes = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ mobile }),
+      body: JSON.stringify({ mobile, path: '/get/user' }),
     });
-    let userDetailsData = await userDetailsRes.json();
-    if (userDetailsData.store) {
-      userDetailsData.isBuyer = true;
+    let {body} = await userDetailsRes.json();
+    if (body.store) {
+      body.isBuyer = true;
     }
-    setUserDetails({ ...userDetails, ...userDetailsData });
+    setUserDetails({ ...userDetails, ...body });
     setLoading(false);
 
-    if (userDetailsData.location === '') {
+    if (body.location === '') {
       requestLocationPermission();
     }
   };
 
-  useEffect(() => {
-    fetchUserDetails();
+    const fetchHomeDetails = async () => {
+      try {
+        const categoriesList = await fetch(
+          'https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: '/get/home' }),
+          },
+        );
+        let {body} = await categoriesList.json();
+        setCategories(body.categories.slice(0,8));
+        setStores(body.stores.slice(0,8));
+        let featuredProducts = body.products.sort(() => Math.random() - 0.5).slice(0, 8);
+        setFeaturedProducts(featuredProducts);
+        let featuredProdIds = featuredProducts.map(prod => prod.id);
+        let dailyDeals = body.products.sort((a, b) => a.yummy_price - b.yummy_price).filter(prod => !featuredProdIds.includes(prod.id)).slice(0, 8);
+        setDailyDeals(dailyDeals);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+  useEffect(async () => {
+    await fetchUserDetails();
+    await fetchHomeDetails();
   }, []);
+
+
 
   const requestLocationPermission = async () => {
     try {
@@ -123,10 +154,11 @@ export default function HomeCustomer() {
           <>
             <Header userDetails={userDetails} />
             <SearchBar />
-            <HomeCategories />
+            <HomeCategories type={"category"} categories={categories} />
             <HomeCarousal />
-            <FeaturedProducts topMargin={0} />
-            <Deals />
+            <FeaturedProducts mobile={mobile} products={featuredProducts} topMargin={0} />
+            <HomeCategories type={"store"} categories={stores} />
+            <Deals mobile={mobile} products={dailyDeals} />
           </>
         )}
       </ScrollView>

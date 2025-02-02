@@ -7,14 +7,15 @@ import RupeeIcon from '../../../assets/RupeeIcon.svg';
 import Tick from '../../../assets/tick.svg';
 import Stars from '../../../assets/stars.svg';
 
-const ProductDescription = () => {
+const ProductDescription = ({product}) => {
+  let discount = Math.floor(((product.mrp - product.yummy_price) / product.mrp) * 100);
   return (
     <>
       <View style={{ position: 'relative', marginTop: 8 }}>
         <View style={styles.productDetailContainer}>
           <View style={styles.productDetailHeader}>
             <Text style={styles.productName}>
-              Bell Pepper Nutella karmen lopu Karmen mon
+              {product.name}
             </Text>
             <View style={styles.productHeaderIcons}>
               <AddWishlist width={18} height={18} />
@@ -24,13 +25,13 @@ const ProductDescription = () => {
 
           <View style={styles.sellerDetail}>
             <Logo />
-            <Text style={styles.seller}>Shibina</Text>
+            <Text style={styles.seller}>{product.store.name}</Text>
           </View>
 
           <View style={styles.priceDetailContainer}>
             <View style={styles.productPriceContainer}>
               <RupeeIcon style={styles.RupeeIcon} />
-              <Text style={styles.price}>420</Text>
+              <Text style={styles.price}>₹ {product.yummy_price}</Text>
               <View style={styles.MRPBox}>
                 <Text style={styles.heading}>MRP</Text>
                 <Image
@@ -39,15 +40,17 @@ const ProductDescription = () => {
                     uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/34gxxk286wr-2541%3A232?alt=media&token=b4547613-3b24-49fb-8b50-090b7fba058e',
                   }}
                 />
-                <Text style={styles.mrpprice}>500</Text>
+                <Text style={styles.mrpprice}>{product.mrp}</Text>
               </View>
               <View style={styles.offerBox}>
-                <Text style={styles.offerText}>52% OFF</Text>
+                <Text style={styles.offerText}>{discount}% OFF</Text>
               </View>
             </View>
 
             <View style={styles.QuantityContainer}>
-              <View style={styles.QuantityTextContainer}>
+              {
+                product.stock === 'in-stock' ? (
+                  <View style={styles.QuantityTextContainer}>
                 <Text style={styles.QuantityText}>QTY : 1</Text>
                 <Image
                   style={styles.DownArrowWhite}
@@ -56,17 +59,32 @@ const ProductDescription = () => {
                   }}
                 />
               </View>
+                ) : (
+                  <View style={styles.QuantityTextContainer}>
+                <Text style={styles.QuantityText}>Product unavailable</Text>
+              </View>
+                )
+              }
             </View>
           </View>
 
           <View style={styles.stockDetails}>
-            <Text>Instock</Text>
-            <Tick width={14} height={14} />
+            {
+              product.stock === 'in-stock' ? (
+                <>
+                  <Text>In stock</Text>
+                  <Tick width={14} height={14} />
+                </>
+              ) : (
+                <Text>Out of stock</Text>
+              )
+            }
           </View>
 
           <Text style={styles.descriptionText}>
-            Nutella® is famous for its authentic taste of hazelnuts and cocoa,
-            made even more irresistible by its unique creaminess.
+            {
+              product.description
+            }
           </Text>
         </View>
 

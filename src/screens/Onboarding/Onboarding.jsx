@@ -43,12 +43,12 @@ export default function Onboarding() {
 
   const handleCompleteOnboard = async () => {
     console.log({ mobile, ...userDetail });
-    const submitRes = await fetch('http://10.0.2.2:4000/user/onboarding', {
+    const submitRes = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ mobile, ...userDetail }),
+      body: JSON.stringify({ mobile, ...userDetail, path: '/user/onboarding' }),
     });
     if (submitRes.ok) {
       navigation.navigate('HomeScreen', { mobile });

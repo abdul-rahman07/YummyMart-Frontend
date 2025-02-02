@@ -50,17 +50,17 @@ export default function SellerEntry() {
       if (resubmit) {
         try {
           const response = await fetch(
-            'http://10.0.2.2:4000/seller-submitted-details',
+            'https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default',
             {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ mobile }),
+              body: JSON.stringify({ mobile, path: '/seller-submitted-details' }),
             },
           );
-          const sellerData = await response.json();
-          setSellerDetails(sellerData);
+          const {body} = await response.json();
+          setSellerDetails(body);
         } catch (error) {
           console.error('Error fetching seller details:', error);
         }
@@ -121,7 +121,7 @@ export default function SellerEntry() {
       return;
     }
 
-    const response = await fetch('http://10.0.2.2:4000/register/seller', {
+    const response = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -131,10 +131,11 @@ export default function SellerEntry() {
         gstnumber: gst_number,
         mobile,
         resubmit,
+        path: '/register/seller'
       }),
     });
-    const responseData = await response.json();
-    if (responseData.success) {
+    const {body} = await response.json();
+    if (body.success) {
       alert('Seller registered successfully');
     } else {
       alert('Failed to register seller');

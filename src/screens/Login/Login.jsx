@@ -35,20 +35,20 @@ const Login = () => {
     }
 
     try {
-      const sendOTPRes = await fetch('http://10.0.2.2:4000/send/otp', {
+      const sendOTPRes = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mobile }),
+        body: JSON.stringify({ mobile, path: '/send/otp' }),
       });
 
       if (sendOTPRes.ok) {
         handleAlert('OTP sent successfully');
         setOtpEnabled(true);
       } else {
-        const errorData = await sendOTPRes.json();
-        console.log('Response error data:', errorData);
+        const {body} = await sendOTPRes.json();
+        console.log('Response error data:', body);
         handleAlert('Failed to send OTP');
       }
     } catch (error) {
@@ -63,18 +63,18 @@ const Login = () => {
       return;
     }
     try {
-      const verifyOTPRes = await fetch('http://10.0.2.2:4000/verify/otp', {
+      const verifyOTPRes = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ mobile, otp }),
+        body: JSON.stringify({ mobile, otp, path: '/verify/otp' }),
       });
-      const verifyOTPData = await verifyOTPRes.json();
-      handleAlert(verifyOTPData.message);
-      if (verifyOTPData.isVerified && verifyOTPData.isNewUser) {
+      const {body} = await verifyOTPRes.json();
+      handleAlert(body.message);
+      if (body.isVerified && body.isNewUser) {
         navigation.navigate('Onboarding', { mobile });
-      } else if (verifyOTPData.isVerified && !verifyOTPData.isNewUser) {
+      } else if (body.isVerified && !body.isNewUser) {
         navigation.navigate('HomeScreen', { mobile });
       }
     } catch (err) {

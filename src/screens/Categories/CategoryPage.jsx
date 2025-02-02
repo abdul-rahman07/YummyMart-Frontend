@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,18 +10,47 @@ import {
 } from 'react-native';
 import GradientBack from '../../../assets/GradientBackBtn.svg';
 import SearchBar from '../SearchBar/Searchbar';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 export default function CategoryPage() {
   const navigation = useNavigation();
-  const [activeTab, setActiveTab] = useState('Healthy');
-  const tabs = [
-    { label: 'Healthy', content: 'Healthy section!' },
-    { label: 'Spicy', content: 'Spicy dishes!' },
-    { label: 'Fruits', content: 'Fresh Fruits!' },
-    { label: 'Sweets', content: 'Sweet treats!' },
-    { label: 'Sweet', content: 'More Sweet options for you!' },
-  ];
+  const route = useRoute();
+  const { categoryId } = route.params || {};
+  const [activeTab, setActiveTab] = useState('');
+  const [tabs, setTabs] = useState([]);
+  const [activeCategory, setActiveCategory] = useState({});
+  const [popularStores, setPopularStores] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesList = await fetch(
+          'https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: '/get/categories-details' }),
+          },
+        );
+        let { body } = await categoriesList.json();
+        let allCategories = body.map(category => {
+          return { label: category.name, content: category.description }
+        });
+        setTabs(allCategories);
+        let activeCategory = body.find(category => category.id === categoryId);
+        let top4PopularStores = activeCategory.stores.slice(0, 4);
+        setActiveCategory(activeCategory);
+        setPopularStores(top4PopularStores);
+        setActiveTab(activeCategory.name);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const renderTabItem = ({ item }) => (
     <TouchableOpacity
@@ -42,7 +71,6 @@ export default function CategoryPage() {
     </TouchableOpacity>
   );
 
-  // Find the content for the active tab
   const activeContent = tabs.find((tab) => tab.label === activeTab)?.content;
 
   return (
@@ -64,7 +92,7 @@ export default function CategoryPage() {
               </Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.DiscountText}>Discounts valid till Dec 25th</Text>
+          <Text style={styles.DiscountText}>Discounts valid till Mar 25th</Text>
         </View>
       </View>
 
@@ -94,195 +122,71 @@ export default function CategoryPage() {
         </View>
 
         <View style={styles.CategoriesListBox}>
-          <View style={styles.CategoryBox}>
-            <Image
-              style={styles.CategoryImage}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-              }}
-            />
-            <Text style={styles.CategoryText}>Fruits</Text>
-          </View>
-          <View style={styles.CategoryBox}>
-            <Image
-              style={styles.CategoryImage}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-              }}
-            />
-            <Text style={styles.CategoryText}>Fruits</Text>
-          </View>
-          <View style={styles.CategoryBox}>
-            <Image
-              style={styles.CategoryImage}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-              }}
-            />
-            <Text style={styles.CategoryText}>Fruits</Text>
-          </View>
-          <View style={styles.CategoryBox}>
-            <Image
-              style={styles.CategoryImage}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/2l9vqlmvhmc-2501%3A211?alt=media&token=4dab2cba-d530-463f-a44c-6829e9c525aa',
-              }}
-            />
-            <Text style={styles.CategoryText}>Fruits</Text>
-          </View>
+          {
+            popularStores?.map(store => {
+              return (
+                <View style={styles.CategoryBox}>
+                  <Image
+                    style={styles.CategoryImage}
+                    source={{
+                      uri: store.image_url,
+                    }}
+                  />
+                  <Text style={styles.CategoryText}>{store.name}</Text>
+                </View>
+              )
+            })
+          }
         </View>
 
         <View style={styles.CategoriesProductListBox}>
-          <View style={styles.CategoryProductsBox}>
-            <View style={styles.productContainer}>
-              <Image
-                style={styles.product}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6',
-                }}
-              />
-            </View>
-            <View style={styles.leftTopBox}>
-              <Text style={styles.leftTopText}>52% Off</Text>
-            </View>
-            <Image
-              style={styles.plusIcon}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
-              }}
-            />
+          {
+            activeCategory?.products?.map((product, index) => {
+              let prod_img = product.product_images;
+              try {
+                prod_img = JSON.parse(prod_img);
+                prod_img = prod_img[0];
+              } catch (e) {
+                console.log(e);
+              }
+              let discount_percentage = product.mrp - product.yummy_price;
+              discount_percentage = (discount_percentage / product.mrp) * 100;
+              discount_percentage = Math.round(discount_percentage);
+              let ellipsis_description = product.description.length > 30 ? product.description.slice(0, 30) + '...' : product.description;
 
-            <View style={styles.ProductDetail}>
-              <Text style={styles.price}>480da</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.originalPrice}>630da</Text>
-              </View>
-              <Text style={styles.productExcerpt}>
-                Bell Pepper Nutella karmen lopu...
-              </Text>
-            </View>
-          </View>
+              return (
+                <View style={styles.CategoryProductsBox} onPress={() => navigation.navigate('CategoryPage', {productId: product.id})}>
+                  <View style={styles.productContainer}>
+                    <Image
+                      style={styles.product}
+                      source={{
+                        uri: prod_img,
+                      }}
+                    />
+                  </View>
+                  <View style={styles.leftTopBox}>
+                    <Text style={styles.leftTopText}>{discount_percentage}% Off</Text>
+                  </View>
+                  <Image
+                    style={styles.plusIcon}
+                    source={{
+                      uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
+                    }}
+                  />
 
-          <View style={styles.CategoriesProductListBox}>
-            <View style={styles.CategoryProductsBox}>
-              <View style={styles.productContainer}>
-                <Image
-                  style={styles.product}
-                  source={{
-                    uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6',
-                  }}
-                />
-              </View>
-              <View style={styles.leftTopBox}>
-                <Text style={styles.leftTopText}>52% Off</Text>
-              </View>
-              <Image
-                style={styles.plusIcon}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
-                }}
-              />
-
-              <View style={styles.ProductDetail}>
-                <Text style={styles.price}>480da</Text>
-                <View style={styles.priceContainer}>
-                  <Text style={styles.originalPrice}>630da</Text>
+                  <View style={styles.ProductDetail}>
+                    <Text style={styles.price}>₹ {product.yummy_price}</Text>
+                    <View style={styles.priceContainer}>
+                      <Text style={styles.originalPrice}>₹ {product.mrp}</Text>
+                    </View>
+                    <Text style={styles.productExcerpt}>
+                      {ellipsis_description}
+                    </Text>
+                  </View>
                 </View>
-                <Text style={styles.productExcerpt}>
-                  Bell Pepper Nutella karmen lopu...
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.CategoryProductsBox}>
-            <View style={styles.productContainer}>
-              <Image
-                style={styles.product}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6',
-                }}
-              />
-            </View>
-            <View style={styles.leftTopBox}>
-              <Text style={styles.leftTopText}>52% Off</Text>
-            </View>
-            <Image
-              style={styles.plusIcon}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
-              }}
-            />
-
-            <View style={styles.ProductDetail}>
-              <Text style={styles.price}>480da</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.originalPrice}>630da</Text>
-              </View>
-              <Text style={styles.productExcerpt}>
-                Bell Pepper Nutella karmen lopu...
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.CategoryProductsBox}>
-            <View style={styles.productContainer}>
-              <Image
-                style={styles.product}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6',
-                }}
-              />
-            </View>
-            <View style={styles.leftTopBox}>
-              <Text style={styles.leftTopText}>52% Off</Text>
-            </View>
-            <Image
-              style={styles.plusIcon}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
-              }}
-            />
-
-            <View style={styles.ProductDetail}>
-              <Text style={styles.price}>480da</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.originalPrice}>630da</Text>
-              </View>
-              <Text style={styles.productExcerpt}>
-                Bell Pepper Nutella karmen lopu...
-              </Text>
-            </View>
-          </View>
-          <View style={styles.CategoryProductsBox}>
-            <View style={styles.productContainer}>
-              <Image
-                style={styles.product}
-                source={{
-                  uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/bmmwjz3h67u-2411%3A301?alt=media&token=fd8b3323-4d91-4fcb-9324-07f7cb5575b6',
-                }}
-              />
-            </View>
-            <View style={styles.leftTopBox}>
-              <Text style={styles.leftTopText}>52% Off</Text>
-            </View>
-            <Image
-              style={styles.plusIcon}
-              source={{
-                uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
-              }}
-            />
-
-            <View style={styles.ProductDetail}>
-              <Text style={styles.price}>480da</Text>
-              <View style={styles.priceContainer}>
-                <Text style={styles.originalPrice}>630da</Text>
-              </View>
-              <Text style={styles.productExcerpt}>
-                Bell Pepper Nutella karmen lopu...
-              </Text>
-            </View>
-          </View>
+              )
+            })
+          }
         </View>
       </ScrollView>
     </>

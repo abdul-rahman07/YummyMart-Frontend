@@ -1,21 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Image, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Categories() {
   const navigation = useNavigation();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesList = await fetch(
+          'https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: '/get/categories' }),
+          },
+        );
+        let {body} = await categoriesList.json();
+        setCategories(body);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
   return (
     <>
       <View style={styles.CategoriesContainer}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image
-          style={styles.backBtn}
-          source={{
-            uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/l7j9k75eoks-2461%3A2578?alt=media&token=c900e811-e307-41d1-a219-c069fd597763',
-          }}
-        />
+          <Image
+            style={styles.backBtn}
+            source={{
+              uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/l7j9k75eoks-2461%3A2578?alt=media&token=c900e811-e307-41d1-a219-c069fd597763',
+            }}
+          />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Categories</Text>
+        <Text style={styles.headerText}>All Categories</Text>
         <Image
           style={styles.notificationIcon}
           source={{
@@ -35,95 +59,43 @@ export default function Categories() {
           marginTop: 35,
         }}
       >
-        <TouchableOpacity style={styles.categoriesBox} onPress={() => navigation.navigate('CategoryPage')}>
-          <View style={styles.categoriesTextBox}>
-            <Text style={styles.categoriesHeaderText}>Healthy</Text>
-            <Text style={styles.categoriesDescription}>
-              Bell Pepper Nutella karmen lopu Karmen mon
-            </Text>
-          </View>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: 'https://media.istockphoto.com/id/168340083/photo/choosemyplate-healthy-food-and-plate-of-usda-balanced-diet-recommendation.jpg?s=612x612&w=0&k=20&c=S5OYuPg-n1fuOOgReQf9xPuFgA1i-UO54Uj2u1RD7iU=',
-            }}
-          />
-        </TouchableOpacity>
+        {
+          categories?.map((category, index) => {
+            let isIndexOdd = index % 2 !== 0;
 
-        <View style={styles.categoriesBoxBlue}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: 'https://media.istockphoto.com/id/168340083/photo/choosemyplate-healthy-food-and-plate-of-usda-balanced-diet-recommendation.jpg?s=612x612&w=0&k=20&c=S5OYuPg-n1fuOOgReQf9xPuFgA1i-UO54Uj2u1RD7iU=',
-            }}
-          />
-          <View style={styles.categoriesTextBox}>
-            <Text style={styles.categoriesHeaderText}>Healthy</Text>
-            <Text style={styles.categoriesDescription}>
-              Bell Pepper Nutella karmen lopu Karmen mon
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.categoriesBox}>
-          <View style={styles.categoriesTextBox}>
-            <Text style={styles.categoriesHeaderText}>Healthy</Text>
-            <Text style={styles.categoriesDescription}>
-              Bell Pepper Nutella karmen lopu Karmen mon
-            </Text>
-          </View>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: 'https://media.istockphoto.com/id/168340083/photo/choosemyplate-healthy-food-and-plate-of-usda-balanced-diet-recommendation.jpg?s=612x612&w=0&k=20&c=S5OYuPg-n1fuOOgReQf9xPuFgA1i-UO54Uj2u1RD7iU=',
-            }}
-          />
-        </View>
-
-        <View style={styles.categoriesBoxBlue}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: 'https://media.istockphoto.com/id/168340083/photo/choosemyplate-healthy-food-and-plate-of-usda-balanced-diet-recommendation.jpg?s=612x612&w=0&k=20&c=S5OYuPg-n1fuOOgReQf9xPuFgA1i-UO54Uj2u1RD7iU=',
-            }}
-          />
-          <View style={styles.categoriesTextBox}>
-            <Text style={styles.categoriesHeaderText}>Healthy</Text>
-            <Text style={styles.categoriesDescription}>
-              Bell Pepper Nutella karmen lopu Karmen mon
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.categoriesBox}>
-          <View style={styles.categoriesTextBox}>
-            <Text style={styles.categoriesHeaderText}>Healthy</Text>
-            <Text style={styles.categoriesDescription}>
-              Bell Pepper Nutella karmen lopu Karmen mon
-            </Text>
-          </View>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: 'https://media.istockphoto.com/id/168340083/photo/choosemyplate-healthy-food-and-plate-of-usda-balanced-diet-recommendation.jpg?s=612x612&w=0&k=20&c=S5OYuPg-n1fuOOgReQf9xPuFgA1i-UO54Uj2u1RD7iU=',
-            }}
-          />
-        </View>
-
-        <View style={styles.categoriesBoxBlue}>
-          <Image
-            style={styles.logo}
-            source={{
-              uri: 'https://media.istockphoto.com/id/168340083/photo/choosemyplate-healthy-food-and-plate-of-usda-balanced-diet-recommendation.jpg?s=612x612&w=0&k=20&c=S5OYuPg-n1fuOOgReQf9xPuFgA1i-UO54Uj2u1RD7iU=',
-            }}
-          />
-          <View style={styles.categoriesTextBox}>
-            <Text style={styles.categoriesHeaderText}>Healthy</Text>
-            <Text style={styles.categoriesDescription}>
-              Bell Pepper Nutella karmen lopu Karmen mon
-            </Text>
-          </View>
-        </View>
+            return (
+              isIndexOdd ? (<TouchableOpacity style={styles.categoriesBox} onPress={() => navigation.navigate('CategoryPage', {categoryId: category.id})}>
+                <View style={styles.categoriesTextBox}>
+                  <Text style={styles.categoriesHeaderText}>{category.name}</Text>
+                  <Text style={styles.categoriesDescription}>
+                    {category.description}
+                  </Text>
+                </View>
+                <Image
+                  style={styles.logo}
+                  source={{
+                    uri: category.image_url,
+                  }}
+                />
+              </TouchableOpacity>) : (<TouchableOpacity style={styles.categoriesBox} onPress={() => navigation.navigate('CategoryPage', {categoryId: category.id})}>
+                <View style={styles.categoriesBoxBlue}>
+                  <Image
+                    style={styles.logo}
+                    source={{
+                      uri: category.image_url,
+                    }}
+                  />
+                  <View style={styles.categoriesTextBox}>
+                    <Text style={styles.categoriesHeaderText}>{category.name}</Text>
+                    <Text style={styles.categoriesDescription}>
+                    {category.description}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>)
+            )
+          })
+        }
       </View>
     </>
   );

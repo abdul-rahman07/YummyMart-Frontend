@@ -2,12 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 
-const ProductPage = () => {
-  const images = [
-    { id: '1', source: require('../../../assets/productImage.png') },
-    { id: '2', source: require('../../../assets/productImage.png') },
-    { id: '3', source: require('../../../assets/productImage.png') },
-  ];
+const ProductPage = ({images}) => {
 
   return (
     <View style={styles.container}>
