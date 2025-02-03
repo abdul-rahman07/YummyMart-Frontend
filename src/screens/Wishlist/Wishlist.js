@@ -10,16 +10,13 @@ import {
 } from 'react-native';
 import GradientBack from '../../../assets/GradientBackBtn.svg';
 import SearchBar from '../SearchBar/Searchbar';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import Items from '../Items/Items';
 
-export default function CategoryPage() {
+export default function WishlistPage() {
+  const mobile = '1234567890'; // Replace with actual mobile number
   const navigation = useNavigation();
-  const route = useRoute();
-  const { categoryId } = route.params || {};
-  const [activeTab, setActiveTab] = useState('');
-  const [tabs, setTabs] = useState([]);
-  const [activeCategory, setActiveCategory] = useState({});
-  const [popularStores, setPopularStores] = useState([]);
+  const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
@@ -32,19 +29,11 @@ export default function CategoryPage() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ path: '/get/categories-details' }),
+            body: JSON.stringify({ path: '/get/wishlist', mobile }),
           },
         );
         let { body } = await categoriesList.json();
-        let allCategories = body.map(category => {
-          return { label: category.name, content: category.description }
-        });
-        setTabs(allCategories);
-        let activeCategory = body.find(category => category.id === categoryId);
-        let top4PopularStores = activeCategory.stores.slice(0, 4);
-        setActiveCategory(activeCategory);
-        setPopularStores(top4PopularStores);
-        setActiveTab(activeCategory.name);
+        setProducts(body);
       } catch (err) {
         console.log(err);
       }
@@ -53,32 +42,12 @@ export default function CategoryPage() {
     fetchCategories();
   }, []);
 
-  const renderTabItem = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.tab,
-        activeTab === item.label && styles.activeTab, // Apply active styles
-      ]}
-      onPress={() => setActiveTab(item.label)} // Update active tab
-    >
-      <Text
-        style={[
-          styles.tabText,
-          activeTab === item.label && styles.activeTabText, // Update text style for active tab
-        ]}
-      >
-        {item.label}
-      </Text>
-    </TouchableOpacity>
-  );
-
-  const activeContent = tabs.find((tab) => tab.label === activeTab)?.content;
-
   const closeSearch = () => {
     setSearchText('');
   }
 
   const onSearch = () => {}
+
 
   return (
     <>
@@ -91,15 +60,9 @@ export default function CategoryPage() {
         </View>
         <View style={styles.categorycontentBox}>
           <View style={styles.offerbuttonSection}>
-            <Text style={styles.tagline}>Shop healthy, Eat healthy</Text>
-            <Text style={styles.categoryName}>Healthy!!</Text>
-            <TouchableOpacity style={styles.loginButton}>
-              <Text style={styles.buttonText}>
-                Grab the offer soon by clicking here
-              </Text>
-            </TouchableOpacity>
+            <Text style={styles.categoryName}>My Wishlist</Text>
           </View>
-          <Text style={styles.DiscountText}>Discounts valid till Mar 25th</Text>
+          <Text style={styles.DiscountText}>View your wishlist items here</Text>
         </View>
       </View>
 
@@ -111,90 +74,7 @@ export default function CategoryPage() {
         }}
       >
         <SearchBar searchText={searchText} setSearchText={setSearchText} closeSearch={closeSearch} onSearch={onSearch} />
-        {/* Tab View */}
-        <FlatList
-          horizontal
-          data={tabs}
-          keyExtractor={(item) => item.label}
-          renderItem={renderTabItem}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tabContainer}
-        />
-
-        {/* Content for the active tab */}
-        <View style={styles.contentContainer}>
-          <Text style={styles.activeContentText}>
-            Popular stores of {activeContent}
-          </Text>
-        </View>
-
-        <View style={styles.CategoriesListBox}>
-          {
-            popularStores?.map(store => {
-              return (
-                <View style={styles.CategoryBox}>
-                  <Image
-                    style={styles.CategoryImage}
-                    source={{
-                      uri: store.image_url,
-                    }}
-                  />
-                  <Text style={styles.CategoryText}>{store.name}</Text>
-                </View>
-              )
-            })
-          }
-        </View>
-
-        <View style={styles.CategoriesProductListBox}>
-          {
-            activeCategory?.products?.filter(prod => JSON.stringify(prod).includes(searchText)).map((product, index) => {
-              let prod_img = product.product_images;
-              try {
-                prod_img = JSON.parse(prod_img);
-                prod_img = prod_img[0];
-              } catch (e) {
-                console.log(e);
-              }
-              let discount_percentage = product.mrp - product.yummy_price;
-              discount_percentage = (discount_percentage / product.mrp) * 100;
-              discount_percentage = Math.round(discount_percentage);
-              let ellipsis_description = product.description.length > 30 ? product.description.slice(0, 30) + '...' : product.description;
-
-              return (
-                <View style={styles.CategoryProductsBox} onPress={() => navigation.navigate('CategoryPage', {productId: product.id})}>
-                  <View style={styles.productContainer}>
-                    <Image
-                      style={styles.product}
-                      source={{
-                        uri: prod_img,
-                      }}
-                    />
-                  </View>
-                  <View style={styles.leftTopBox}>
-                    <Text style={styles.leftTopText}>{discount_percentage}% Off</Text>
-                  </View>
-                  <Image
-                    style={styles.plusIcon}
-                    source={{
-                      uri: 'https://firebasestorage.googleapis.com/v0/b/unify-v3-copy.appspot.com/o/af3wlt5bplt-2411%3A305?alt=media&token=76e8b418-0888-4443-8a25-b1ae87d1f757',
-                    }}
-                  />
-
-                  <View style={styles.ProductDetail}>
-                    <Text style={styles.price}>₹ {product.yummy_price}</Text>
-                    <View style={styles.priceContainer}>
-                      <Text style={styles.originalPrice}>₹ {product.mrp}</Text>
-                    </View>
-                    <Text style={styles.productExcerpt}>
-                      {ellipsis_description}
-                    </Text>
-                  </View>
-                </View>
-              )
-            })
-          }
-        </View>
+        <Items products={products.filter(prod => JSON.stringify(prod).includes(searchText))} />
       </ScrollView>
     </>
   );

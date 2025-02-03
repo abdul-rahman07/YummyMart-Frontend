@@ -45,10 +45,6 @@ export default function Orders() {
         </TouchableOpacity>
       </View>
 
-      {/* searchbar */}
-
-      <SearchBar />
-
       {/* cartItems */}
 
       <View style={[styles.cartListBox, { marginTop: 14 }]}>

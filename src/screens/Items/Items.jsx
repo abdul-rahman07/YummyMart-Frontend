@@ -1,108 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  FlatList,
   Image,
   ScrollView,
 } from 'react-native';
-import GradientBack from '../../../assets/GradientBackBtn.svg';
 import SearchBar from '../SearchBar/Searchbar';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function CategoryPage() {
+export default function Items({ products }) {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { categoryId } = route.params || {};
-  const [activeTab, setActiveTab] = useState('');
-  const [tabs, setTabs] = useState([]);
-  const [activeCategory, setActiveCategory] = useState({});
-  const [popularStores, setPopularStores] = useState([]);
-  const [searchText, setSearchText] = useState('');
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesList = await fetch(
-          'https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ path: '/get/categories-details' }),
-          },
-        );
-        let { body } = await categoriesList.json();
-        let allCategories = body.map(category => {
-          return { label: category.name, content: category.description }
-        });
-        setTabs(allCategories);
-        let activeCategory = body.find(category => category.id === categoryId);
-        let top4PopularStores = activeCategory.stores.slice(0, 4);
-        setActiveCategory(activeCategory);
-        setPopularStores(top4PopularStores);
-        setActiveTab(activeCategory.name);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  const renderTabItem = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.tab,
-        activeTab === item.label && styles.activeTab, // Apply active styles
-      ]}
-      onPress={() => setActiveTab(item.label)} // Update active tab
-    >
-      <Text
-        style={[
-          styles.tabText,
-          activeTab === item.label && styles.activeTabText, // Update text style for active tab
-        ]}
-      >
-        {item.label}
-      </Text>
-    </TouchableOpacity>
-  );
-
-  const activeContent = tabs.find((tab) => tab.label === activeTab)?.content;
-
-  const closeSearch = () => {
-    setSearchText('');
-  }
-
-  const onSearch = () => {}
 
   return (
-    <>
-      <View style={styles.categoryHeroContainer}>
-        <View style={styles.imageContainer}>
-          <GradientBack
-            style={styles.backBtn}
-            onPress={() => navigation.goBack()}
-          />
-        </View>
-        <View style={styles.categorycontentBox}>
-          <View style={styles.offerbuttonSection}>
-            <Text style={styles.tagline}>Shop healthy, Eat healthy</Text>
-            <Text style={styles.categoryName}>Healthy!!</Text>
-            <TouchableOpacity style={styles.loginButton}>
-              <Text style={styles.buttonText}>
-                Grab the offer soon by clicking here
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.DiscountText}>Discounts valid till Mar 25th</Text>
-        </View>
-      </View>
-
       <ScrollView
         style={styles.categoryContentBox}
         contentContainerStyle={{
@@ -110,45 +21,9 @@ export default function CategoryPage() {
           justifyContent: 'center',
         }}
       >
-        <SearchBar searchText={searchText} setSearchText={setSearchText} closeSearch={closeSearch} onSearch={onSearch} />
-        {/* Tab View */}
-        <FlatList
-          horizontal
-          data={tabs}
-          keyExtractor={(item) => item.label}
-          renderItem={renderTabItem}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.tabContainer}
-        />
-
-        {/* Content for the active tab */}
-        <View style={styles.contentContainer}>
-          <Text style={styles.activeContentText}>
-            Popular stores of {activeContent}
-          </Text>
-        </View>
-
-        <View style={styles.CategoriesListBox}>
-          {
-            popularStores?.map(store => {
-              return (
-                <View style={styles.CategoryBox}>
-                  <Image
-                    style={styles.CategoryImage}
-                    source={{
-                      uri: store.image_url,
-                    }}
-                  />
-                  <Text style={styles.CategoryText}>{store.name}</Text>
-                </View>
-              )
-            })
-          }
-        </View>
-
         <View style={styles.CategoriesProductListBox}>
           {
-            activeCategory?.products?.filter(prod => JSON.stringify(prod).includes(searchText)).map((product, index) => {
+            products?.map((product, index) => {
               let prod_img = product.product_images;
               try {
                 prod_img = JSON.parse(prod_img);
@@ -196,7 +71,6 @@ export default function CategoryPage() {
           }
         </View>
       </ScrollView>
-    </>
   );
 }
 

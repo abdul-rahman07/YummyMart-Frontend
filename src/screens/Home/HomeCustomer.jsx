@@ -10,6 +10,7 @@ import { Platform, ScrollView } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
 import { PERMISSIONS, request, check, RESULTS } from 'react-native-permissions';
+import Items from '../Items/Items';
 
 export default function HomeCustomer() {
   const route = useRoute();
@@ -26,6 +27,7 @@ export default function HomeCustomer() {
   const [stores, setStores] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [dailyDeals, setDailyDeals] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
 
   const fetchUserDetails = async () => {
     const userDetailsRes = await fetch('https://akk31sm8ig.execute-api.us-east-1.amazonaws.com/default', {
@@ -67,6 +69,7 @@ export default function HomeCustomer() {
         let featuredProdIds = featuredProducts.map(prod => prod.id);
         let dailyDeals = body.products.sort((a, b) => a.yummy_price - b.yummy_price).filter(prod => !featuredProdIds.includes(prod.id)).slice(0, 8);
         setDailyDeals(dailyDeals);
+        setAllProducts(body.products);
       } catch (err) {
         console.log(err);
       }
@@ -153,12 +156,13 @@ export default function HomeCustomer() {
         ) : (
           <>
             <Header userDetails={userDetails} />
-            <SearchBar />
+            <SearchBar /> {/* On clicking take to Search Page */}
             <HomeCategories type={"category"} categories={categories} />
             <HomeCarousal />
             <FeaturedProducts mobile={mobile} products={featuredProducts} topMargin={0} />
             <HomeCategories type={"store"} categories={stores} />
             <Deals mobile={mobile} products={dailyDeals} />
+            <Items products={allProducts} />
           </>
         )}
       </ScrollView>
