@@ -42,12 +42,12 @@ const Login = () => {
         },
         body: JSON.stringify({ mobile, path: '/send/otp' }),
       });
+      const {body} = await sendOTPRes.json();
 
-      if (sendOTPRes.ok) {
-        handleAlert('OTP sent successfully');
+      if (sendOTPRes.statusCode === 200) {
+        handleAlert(body);
         setOtpEnabled(true);
-      } else {
-        const {body} = await sendOTPRes.json();
+      } else {  
         console.log('Response error data:', body);
         handleAlert('Failed to send OTP');
       }
